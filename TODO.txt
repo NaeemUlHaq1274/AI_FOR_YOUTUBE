@@ -1,0 +1,2 @@
+1) Write a function that returns the script for the input audio
+2) Write a function that returns the the audio and script for the input youtube video link

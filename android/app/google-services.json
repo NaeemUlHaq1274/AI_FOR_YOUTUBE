@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "634194807791",
+    "project_id": "ai-speech-to-text-f1925",
+    "storage_bucket": "ai-speech-to-text-f1925.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634194807791:android:5a9235ebf1b3ea9ee1c41a",
+        "android_client_info": {
+          "package_name": "com.ford9.ai.speech.to.text.transcribe.audio.to.text"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGpUMrtuu75vH8AJCa3qiDGyGJZmrOYQQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
