@@ -76,9 +76,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.ford9.ai.speech.to.text.transcribe.audio.to.text"
+    namespace "com.technext.creatorboost.youtubetools.ai"
     defaultConfig {
-        applicationId "com.ford9.ai.speech.to.text.transcribe.audio.to.text"
+        applicationId "com.technext.creatorboost.youtubetools.ai"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

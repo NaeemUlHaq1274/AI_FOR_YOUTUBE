@@ -1,6 +1,6 @@
 {
-  "name": "AI_TextToSpeech",
-  "displayName": "AI_TextToSpeech",
+  "name": "CreatorBoost",
+  "displayName": "CreatorBoost",
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-xxxxxxxx~xxxxxxxx",
     "ios_app_id": "ca-app-pub-xxxxxxxx~xxxxxxxx"
