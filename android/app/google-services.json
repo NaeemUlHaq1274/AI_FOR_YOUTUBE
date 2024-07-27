@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "634194807791",
-    "project_id": "ai-speech-to-text-f1925",
-    "storage_bucket": "ai-speech-to-text-f1925.appspot.com"
+    "project_number": "494939797463",
+    "project_id": "ai-for-ee7c7",
+    "storage_bucket": "ai-for-ee7c7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:634194807791:android:5a9235ebf1b3ea9ee1c41a",
+        "mobilesdk_app_id": "1:494939797463:android:44aeb8f3a9c2e5e345bd92",
         "android_client_info": {
-          "package_name": "com.ford9.ai.speech.to.text.transcribe.audio.to.text"
+          "package_name": "com.technext.creatorboost.youtubetools.ai"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAGpUMrtuu75vH8AJCa3qiDGyGJZmrOYQQ"
+          "current_key": "AIzaSyC35f105rCuD-pxlY25zO3HjrdkZdv5ZHI"
         }
       ],
       "services": {
