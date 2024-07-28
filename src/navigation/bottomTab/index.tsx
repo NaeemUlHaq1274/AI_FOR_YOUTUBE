@@ -1,20 +1,19 @@
-import { SCREEN_NAMES, STACK_NAMES } from '@constants';
+import { STACK_NAMES } from '@constants';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import { Dashboard, SubscriptionScreen } from '@screens';
 import React from 'react';
-import { HomeStack } from '../stack';
+import { CreateStack } from '../stack';
+import SavedStack from '../stack/SavedStack';
+import ProfileStack from '../stack/ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigation = () => {
     return (
-        <NavigationContainer>
-            <Tab.Navigator>
-                <Tab.Screen name={STACK_NAMES.HOME_STACK} component={HomeStack} />
-                <Tab.Screen name={SCREEN_NAMES.HOME_LOADING_SCREEN} component={SubscriptionScreen} />
-            </Tab.Navigator>
-        </NavigationContainer>
+        <Tab.Navigator>
+            <Tab.Screen name={STACK_NAMES.CREATE_STACK} component={CreateStack} />
+            <Tab.Screen name={STACK_NAMES.SAVED_STACK} component={SavedStack} />
+            <Tab.Screen name={STACK_NAMES.PROFILE_STACK} component={ProfileStack} />
+        </Tab.Navigator>
     );
 };
 

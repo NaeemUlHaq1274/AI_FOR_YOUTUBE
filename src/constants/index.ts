@@ -8,11 +8,9 @@ export * from "./ImagesPaths"
 import { adjust } from "@utils";
 
 export const MY_COLORS = {
-    PRIMARY:'#4DC9D5',
-    SECONDARY: '#FF5A70',
-    TXT_PRIMARY: '#333333',
-    TXT_SECONDARY: '#858597',
-    TXT_DIM: '#8F8E94'
+    PRIMARY:'#E4644B',
+    BLACK: '#2C2C2C',
+    WHITE: '#FBFBFA',
 };
 
 

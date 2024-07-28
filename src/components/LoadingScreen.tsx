@@ -7,7 +7,7 @@ import { adjust } from '@utils'
 const LoadingScreen:React.FC<{description?:string}> = ({description}) => {
     return (
         <View style={styles.container}>
-            <ActivityIndicator size={50} color={MY_COLORS.SECONDARY} />
+            <ActivityIndicator size={50} color={MY_COLORS.WHITE} />
             <MyText cp style={{textAlign:'center'}}> {description} </MyText>
         </View>
     )

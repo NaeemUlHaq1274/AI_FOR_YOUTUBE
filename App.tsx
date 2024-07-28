@@ -1,12 +1,14 @@
 import { ErrorBoundaryFallbackUI, MyText } from '@components';
-import { SubscriptionProvider } from '@context';
+import { AuthProvider, SubscriptionProvider } from '@context';
 import { usePushNotification } from '@hooks';
 import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native'
 import SplashScreen from 'react-native-splash-screen';
 import ErrorBoundary from 'react-native-error-boundary';
 import crashlytics from '@react-native-firebase/crashlytics'
-import { BottomTabNavigation } from '@navigation';
+import { AuthNavigator, BottomTabNavigation } from '@navigation';
+import { NavigationContainer } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 const App = () => {
@@ -32,12 +34,18 @@ const App = () => {
     listenToNotifications();
   }, []);
   return (
-    <ErrorBoundary
-      onError={(error) => crashlytics().recordError(error)}
-      FallbackComponent={ErrorBoundaryFallbackUI}>
-        <BottomTabNavigation />
-        {/* <View style={{flex:1,justifyContent:"center",alignItems:"center",backgroundColor:"red"}}><MyText color='white'>hello</MyText></View> */}
-    </ErrorBoundary>
+    <NavigationContainer>
+      <ErrorBoundary
+        onError={(error) => crashlytics().recordError(error)}
+        FallbackComponent={ErrorBoundaryFallbackUI}>
+        <AuthProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <AuthNavigator />
+          </GestureHandlerRootView>
+        </AuthProvider>
+      </ErrorBoundary>
+    </NavigationContainer>
+
   )
 }
 

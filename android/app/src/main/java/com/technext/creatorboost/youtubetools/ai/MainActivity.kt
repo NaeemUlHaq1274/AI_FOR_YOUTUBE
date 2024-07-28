@@ -1,13 +1,18 @@
 package com.technext.creatorboost.youtubetools.ai
 
+import org.devio.rn.splashscreen.SplashScreen;
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 import android.os.Bundle;
-import org.devio.rn.splashscreen.SplashScreen;
 
 class MainActivity : ReactActivity() {
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    SplashScreen.show(this)  // Show the splash screen here
+    super.onCreate(savedInstanceState)
+  }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule

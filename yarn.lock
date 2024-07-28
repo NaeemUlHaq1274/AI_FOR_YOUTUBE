@@ -4392,6 +4392,7 @@ __metadata:
     prettier: 2.8.8
     react: 18.2.0
     react-native: 0.74.1
+    react-native-app-intro-slider: ^4.0.4
     react-native-audio-recorder-player: ^3.6.10
     react-native-document-picker: ^9.3.0
     react-native-error-boundary: ^1.2.4
@@ -8645,6 +8646,13 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
+  languageName: node
+  linkType: hard
+
+"react-native-app-intro-slider@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "react-native-app-intro-slider@npm:4.0.4"
+  checksum: 4997712bb482e9f20df543ff517f078a05db6edaec4920f155a8b5dd89cdfcc090baedcc2ffd41f487f40649632aeff5b14ef4818ed08a96ddbd6553cc8d4c0a
   languageName: node
   linkType: hard
 
