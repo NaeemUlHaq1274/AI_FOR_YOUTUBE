@@ -10,9 +10,9 @@ const Tab = createBottomTabNavigator();
 const BottomTabNavigation = () => {
     return (
         <Tab.Navigator>
-            <Tab.Screen name={STACK_NAMES.CREATE_STACK} component={CreateStack} />
-            <Tab.Screen name={STACK_NAMES.SAVED_STACK} component={SavedStack} />
-            <Tab.Screen name={STACK_NAMES.PROFILE_STACK} component={ProfileStack} />
+            <Tab.Screen name={STACK_NAMES.CREATE_STACK} component={CreateStack} options={{ headerShown: false }} />
+            <Tab.Screen name={STACK_NAMES.SAVED_STACK} component={SavedStack} options={{ headerShown: false }} />
+            <Tab.Screen name={STACK_NAMES.PROFILE_STACK} component={ProfileStack} options={{ headerShown: false }}  />
         </Tab.Navigator>
     );
 };
