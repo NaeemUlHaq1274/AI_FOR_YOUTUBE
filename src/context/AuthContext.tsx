@@ -8,6 +8,7 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react';
+import { WEB_CLIENT_ID } from '@env';
 
 interface User {
   jobSearchToken: number;
@@ -43,7 +44,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [results, setResults] = useState<string>("");
 
   useEffect(() => {
-    GoogleSignin.configure({ webClientId: process.env.WEB_CLIENT_ID })
+    GoogleSignin.configure({ webClientId: WEB_CLIENT_ID })
   }, []);
 
   useEffect(() => {
