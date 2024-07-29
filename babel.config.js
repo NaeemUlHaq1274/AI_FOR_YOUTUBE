@@ -20,6 +20,7 @@ module.exports = {
       }
     ],
     'jest-hoist',
+    'module:react-native-dotenv',
     'react-native-reanimated/plugin',
   ],
 };

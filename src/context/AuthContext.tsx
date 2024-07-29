@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [results, setResults] = useState<string>("");
 
   useEffect(() => {
-    GoogleSignin.configure({ webClientId: '494939797463-a0as8cnggl9occraqbi15se7is0tolni.apps.googleusercontent.com' })
+    GoogleSignin.configure({ webClientId: process.env.WEB_CLIENT_ID })
   }, []);
 
   useEffect(() => {
