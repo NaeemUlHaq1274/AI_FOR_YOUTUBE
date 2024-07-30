@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: adjust(10),
+    paddingVertical: adjust(6),
   },
   icon: {
     width: adjust(130),

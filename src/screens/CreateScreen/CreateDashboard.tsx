@@ -17,16 +17,17 @@ const CreateDashboard: React.FC = () => {
   if (isLoading) {
     return <LoadingScreen description="Generating your video content..." />;
   }
-  // <MyHeader
-  //   color={MY_COLORS.BLACK}
-  //   title="Creator BOOST"
-  //   iconPath={IMAGES_PATHS.BLACK_FEEDBACK as ImageSourcePropType}
-  //   onPressIcon={() => {/* Handle menu press */ }}
-  //   rightIcon={ICONS_PATHS.USER_PROFILE}
-  // />
   return (
-
     <ScrollView contentContainerStyle={styles.container}>
+      <View>
+        <MyHeader
+          color={MY_COLORS.BLACK}
+          title="Creator BOOST"
+          iconPath={IMAGES_PATHS.BLACK_FEEDBACK as ImageSourcePropType}
+          onPressIcon={() => {/* Handle menu press */ }}
+          rightIcon={ICONS_PATHS.USER_PROFILE}
+        />
+      </View>
       <View style={{ gap: adjust(6) }}>
         <MyText p style={styles.labelText}>Generate by Theme</MyText>
         <MyTextInput
