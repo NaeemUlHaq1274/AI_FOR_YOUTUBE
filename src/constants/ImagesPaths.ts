@@ -13,7 +13,15 @@ export const LOGIN_IMAGES_PATH = {
 };
 
 export const IMAGES_PATHS = {
-  BLACK_FEEDBACK:"@assets/Drawer/BLACK_FEEDBACK.png"
+  BLACK_FEEDBACK: "@assets/Drawer/BLACK_FEEDBACK.png"
 }
 
-
+export const ICONS_PATHS = {
+  PLUS: require('@assets/Dashboard/PLUS_BTN.png'),
+  USER_PROFILE: require('@assets/Dashboard/USER_PROFILE.png'),
+  GENERATE_ICON: require('@assets/Dashboard/GENERATE_ICON.png'),
+  MENU: require('@assets/Dashboard/MENU.png'),
+  NEXT: require('@assets/Dashboard/NEXT.png'),
+  LOGO: require('@assets/Dashboard/LOGO.png'),
+  CHEVRON: require('@assets/Dashboard/CHEVRON.png'),
+}

@@ -9,6 +9,7 @@ import crashlytics from '@react-native-firebase/crashlytics'
 import { AuthNavigator, BottomTabNavigation } from '@navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { MY_COLORS } from '@constants';
 
 
 const App = () => {
@@ -39,7 +40,7 @@ const App = () => {
         onError={(error) => crashlytics().recordError(error)}
         FallbackComponent={ErrorBoundaryFallbackUI}>
         <AuthProvider>
-          <GestureHandlerRootView style={{ flex: 1 }}>
+          <GestureHandlerRootView style={{ flex: 1, }}>
             <AuthNavigator />
           </GestureHandlerRootView>
         </AuthProvider>

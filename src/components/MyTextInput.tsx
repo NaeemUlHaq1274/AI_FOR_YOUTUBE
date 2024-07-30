@@ -1,7 +1,7 @@
 import { MY_COLORS } from '@constants';
 import { adjust, hp } from '@utils';
-import React from 'react';
-import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle } from 'react-native';
+import React, { useState } from 'react';
+import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle, View } from 'react-native';
 import MyText from './MyText';
 
 interface AppProps extends TextInputProps {
@@ -19,26 +19,35 @@ const App: React.FC<AppProps> = ({
   style,
   onChangeText,
 }) => {
-  const styles = myStyles();
+  const [inputHeight, setInputHeight] = useState<number>(hp('7%')); // Initial height
+
+  const handleContentSizeChange = (contentHeight: number) => {
+    setInputHeight(contentHeight + adjust(20)); // Adjust height with some padding
+  };
+
+  const styles = myStyles(inputHeight);
   return (
-    <>
+    <View style={styles.container}>
       {label && <MyText p color={MY_COLORS.TXT_DIM} style={styles.txt}>{label}</MyText>}
-      <TextInput style={[styles.input, style]}
+      <TextInput
+        style={[styles.input, style]}
         placeholder={placeholder}
         placeholderTextColor={MY_COLORS.TXT_DIM}
         value={value}
         onChangeText={onChangeText}
-        
+        multiline // Enable multiline to allow for dynamic height adjustment
+        onContentSizeChange={(e) => handleContentSizeChange(e.nativeEvent.contentSize.height)}
       />
-    </>
+    </View>
   );
 };
 
-const myStyles = () =>
+const myStyles = (height: number) =>
   StyleSheet.create({
+    container: {
+
+    },
     input: {
-      width: '100%',
-      height: hp('7%'),
       paddingHorizontal: 10,
       justifyContent: 'center',
       borderWidth: 1,
@@ -47,7 +56,7 @@ const myStyles = () =>
       color: 'black',
       marginTop: 2,
     },
-    txt: { marginTop: 8 },
+    txt: { marginTop: 0 },
   });
 
 export default App;

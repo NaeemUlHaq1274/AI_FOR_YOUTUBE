@@ -1,55 +1,46 @@
-import React, { FC } from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import MyText from './MyText';
-import { IMAGES_PATHS, MY_COLORS } from '@constants';
-import { useNavigation } from '@react-navigation/native';
-import { hp, wp } from '@utils';
-
+import { ICONS_PATHS } from '@constants';
+import { adjust } from '@utils';
+import React from 'react';
+import { View, Text, Image, TouchableOpacity, ImageSourcePropType, StyleSheet } from 'react-native';
 interface MyHeaderProps {
-  color?: string;
+  color: string;
   title: string;
-  iconPath?: any;
-  onPressIcon?: any;
+  iconPath: ImageSourcePropType;
+  onPressIcon: () => void;
+  rightIcon?: ImageSourcePropType;
 }
 
-const MyHeader: FC<MyHeaderProps> = ({ color = MY_COLORS.PRIMARY, title, iconPath, onPressIcon }) => {
-  const insets = useSafeAreaInsets();
-  const styles = myStyles(insets);
-  const { goBack } = useNavigation();
-
+const MyHeader: React.FC<MyHeaderProps> = ({ color, title, iconPath, onPressIcon, rightIcon }) => {
   return (
     <View style={[styles.header, { backgroundColor: color }]}>
-      <TouchableOpacity onPress={() => onPressIcon()}>
-        <Image source={IMAGES_PATHS.MENU} style={styles.iconContainer} />
+      <TouchableOpacity onPress={onPressIcon}>
+        <Image source={ICONS_PATHS.LOGO} style={styles.icon} />
       </TouchableOpacity>
-      <MyText p bold color={color === MY_COLORS.PRIMARY ? 'white' : color === 'transparent' ? 'white' : 'black'}>
-        {title}
-      </MyText>
+      {rightIcon && <Image source={rightIcon} style={styles.rightIcon} />}
     </View>
   );
 };
 
-const myStyles = (insets: any) =>
-  StyleSheet.create({
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 16,
-      paddingTop: insets.top + 10,
-      paddingBottom: 20,
-    },
-    iconContainer: {
-      height: hp('2.5%'),
-      width: hp('2.5%'),
-      resizeMode: 'contain',
-      marginRight: wp('5%'),
-    },
-  });
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: adjust(10),
+  },
+  icon: {
+    width: adjust(130),
+    height: adjust(40),
+  },
+  title: {
+    color: 'white',
+    fontSize: 20,
+  },
+  rightIcon: {
+    width: adjust(40),
+    height: adjust(40),
+    borderRadius: 15,
+  },
+});
 
 export default MyHeader;

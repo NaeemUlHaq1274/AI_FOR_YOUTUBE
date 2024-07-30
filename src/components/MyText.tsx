@@ -1,7 +1,7 @@
-import {MY_COLORS} from '@constants';
+import { MY_COLORS } from '@constants';
 import { adjust } from '@utils';
-import React, {FC} from 'react';
-import {Text, TextProps, TextStyle} from 'react-native';
+import React, { FC } from 'react';
+import { Text, TextProps, TextStyle } from 'react-native';
 
 interface MyTextProps extends TextProps {
   h1?: boolean;
@@ -40,17 +40,17 @@ const MyText: FC<MyTextProps> = ({
   return (
     <Text
       style={[
-        h1 && {fontSize: adjust(24)},
-        h2 && {fontSize: adjust(20)},
-        h3 && {fontSize: adjust(18)},
-        h4 && {fontSize: adjust(16)},
-        p && {fontSize: adjust(14)},
-        cp && {fontSize: adjust(12)},
-        fp && {fontSize: adjust(10)},
-        bold && {fontWeight: 'bold'},
-        italic && {fontStyle: 'italic'},
-        {color},
-        {fontFamily},
+        h1 && { fontSize: adjust(24) },
+        h2 && { fontSize: adjust(20) },
+        h3 && { fontSize: adjust(18) },
+        h4 && { fontSize: adjust(16) },
+        p && { fontSize: adjust(14) },
+        cp && { fontSize: adjust(12) },
+        fp && { fontSize: adjust(10) },
+        bold && { fontWeight: 'bold' },
+        italic && { fontStyle: 'italic' },
+        { color },
+        { fontFamily },
         style,
       ]}
       {...rest}>

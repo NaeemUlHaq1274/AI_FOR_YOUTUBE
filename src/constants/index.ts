@@ -8,9 +8,12 @@ export * from "./ImagesPaths"
 import { adjust } from "@utils";
 
 export const MY_COLORS = {
-    PRIMARY:'#E4644B',
+    PRIMARY: '#E4644B',
     BLACK: '#2C2C2C',
     WHITE: '#FBFBFA',
+    DARK_GRAY: '#919191',
+    TXT_PRIMARY: '#FBFBFA',
+    TXT_DIM: '#A9A9A9',
 };
 
 
@@ -22,3 +25,5 @@ export const LAYOUT = {
     SPACING_EXTRA_SMALL: adjust(5),
     BORDER_RADIUS_MEDIUM: adjust(10),
 };
+
+export const DASHBOARD_ITEMS = ['Include Title', 'Include Description', 'Include Tags', 'Include Script', 'Include Audio', 'Include Thumbnail'];

@@ -3,15 +3,33 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@assets": ["./src/assets"],
-      "@components": ["./src/components"],
-      "@constants": ["./src/constants"],
-      "@context": ["./src/context"],
-      "@hooks": ["./src/hooks"],
-      "@navigation": ["./src/navigation"],
-      "@screens": ["./src/screens"],
-      "@services": ["./src/services"],
-      "@utils": ["./src/utils"],
+      "@assets": [
+        "./src/assets"
+      ],
+      "@components": [
+        "./src/components"
+      ],
+      "@constants": [
+        "./src/constants"
+      ],
+      "@context": [
+        "./src/context"
+      ],
+      "@hooks": [
+        "./src/hooks"
+      ],
+      "@navigation": [
+        "./src/navigation"
+      ],
+      "@screens": [
+        "./src/screens"
+      ],
+      "@services": [
+        "./src/services"
+      ],
+      "@utils": [
+        "./src/utils"
+      ],
     },
     "strict": true,
     "moduleResolution": "Node"
