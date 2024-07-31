@@ -3,7 +3,6 @@ import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { MyText } from '@components';
 import { MY_COLORS, ICONS_PATHS } from '@constants';
 import { adjust } from '@utils';
-import { Text } from 'react-native-reanimated/lib/typescript/Animated';
 
 interface CategorySelectionProps {
     selectedCategory: string;
@@ -23,6 +22,7 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
     return (
         <View style={{ gap: adjust(6) }}>
             <View style={styles.row}>
+                <MyText>{'Generate by Category'}</MyText>
                 <TouchableOpacity onPress={handleIconPress}>
                     <Image source={ICONS_PATHS.NEXT} style={styles.nextIcon} />
                 </TouchableOpacity>
