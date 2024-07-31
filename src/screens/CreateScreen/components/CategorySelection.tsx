@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { MyText } from '@components';
 import { MY_COLORS, ICONS_PATHS } from '@constants';
 import { adjust } from '@utils';
+import BottomSheet from '@gorhom/bottom-sheet';
 import SettingModal from './SettingModal';
 
 interface CategorySelectionProps {
@@ -20,7 +21,13 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
     handleSubcategoryPress,
     handleIconPress,
 }) => {
+    const bottomSheetRef = useRef<BottomSheet>(null);
     const [settingModalVisible, setSettingModalVisible] = useState(false);
+
+    const openBottomSheet = () => {
+        bottomSheetRef.current?.expand();
+    };
+
     return (
         <View style={{ gap: adjust(6) }}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -47,6 +54,30 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
                 <MyText>{selectedSubcategory || 'Select Subcategory'}</MyText>
                 <Image source={ICONS_PATHS.MENU} style={styles.nextIcon} />
             </TouchableOpacity>
+
+            <BottomSheet
+                ref={bottomSheetRef}
+                index={-1}
+                snapPoints={[300, '50%', '100%']}
+                onChange={(index) => {
+                    if (index === -1) { }
+                }}
+            >
+                <View style={styles.bottomSheetContent}>
+                    <TouchableOpacity style={styles.category} onPress={handleCategoryPress}>
+                        <MyText>{selectedCategory || 'Select Category'}</MyText>
+                        <Image source={ICONS_PATHS.MENU} style={styles.nextIcon} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.category, !selectedCategory && styles.disabledCategory]}
+                        onPress={handleSubcategoryPress}
+                        disabled={!selectedCategory}
+                    >
+                        <MyText>{selectedSubcategory || 'Select Subcategory'}</MyText>
+                        <Image source={ICONS_PATHS.MENU} style={styles.nextIcon} />
+                    </TouchableOpacity>
+                </View>
+            </BottomSheet>
         </View>
     );
 };
@@ -73,6 +104,9 @@ const styles = StyleSheet.create({
     },
     disabledCategory: {
         opacity: 0.5,
+    },
+    bottomSheetContent: {
+        padding: adjust(16),
     },
 });
 

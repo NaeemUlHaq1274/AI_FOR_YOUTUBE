@@ -1,9 +1,9 @@
-import React from 'react';
-import { StyleSheet, View, Modal, TouchableOpacity, Text, FlatList } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, View, Modal, TouchableOpacity, Text, FlatList, Animated, Dimensions } from 'react-native';
 import { MY_COLORS, LAYOUT, SUBCATEGORIES } from '@constants';
 import { adjust } from '@utils';
 
-interface SubcategoryModalProps {
+interface SubcategoryBottomSheetProps {
     visible: boolean;
     setVisible: (visible: boolean) => void;
     selectedCategory: string;
@@ -11,49 +11,81 @@ interface SubcategoryModalProps {
     setSelectedSubcategory: (subcategory: string) => void;
 }
 
-const SubcategoryModal: React.FC<SubcategoryModalProps> = ({
+const { height } = Dimensions.get('window');
+
+const SubcategoryBottomSheet: React.FC<SubcategoryBottomSheetProps> = ({
     visible,
     setVisible,
     selectedCategory,
     selectedSubcategory,
     setSelectedSubcategory,
 }) => {
-    const selectSubcategory = (subcategory: string) => {
+    const [animation] = useState(new Animated.Value(0));
+
+    useEffect(() => {
+        Animated.timing(animation, {
+            toValue: visible ? 1 : 0,
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
+    }, [visible, animation]);
+
+    const selectSubcategory = useCallback((subcategory: string) => {
         setSelectedSubcategory(subcategory);
         setVisible(false);
-    };
+    }, [setSelectedSubcategory, setVisible]);
+
+    const renderItem = useCallback(({ item }: { item: string }) => (
+        <TouchableOpacity
+            style={[
+                styles.modalButton,
+                selectedSubcategory === item && styles.selectedModalButton
+            ]}
+            onPress={() => selectSubcategory(item)}
+        >
+            <Text style={[
+                styles.modalButtonText,
+                selectedSubcategory === item && styles.selectedModalButtonText
+            ]}>
+                {item}
+            </Text>
+        </TouchableOpacity>
+    ), [selectedSubcategory, selectSubcategory]);
+
+    const translateY = animation.interpolate({
+        inputRange: [0, 1],
+        outputRange: [height, 0],
+    });
 
     return (
         <Modal
             transparent={true}
-            animationType="fade"
+            animationType="none"
             visible={visible}
             onRequestClose={() => setVisible(false)}
         >
             <View style={styles.modalOverlay}>
-                <View style={styles.modalContent}>
+                <TouchableOpacity
+                    style={styles.overlay}
+                    activeOpacity={1}
+                    onPress={() => setVisible(false)}
+                />
+                <Animated.View
+                    style={[
+                        styles.bottomSheetContainer,
+                        { transform: [{ translateY }] }
+                    ]}
+                >
+                    <View style={styles.handle} />
                     <Text style={styles.modalTitle}>Select Subcategory</Text>
                     <FlatList
                         data={selectedCategory ? SUBCATEGORIES[selectedCategory] : []}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
-                                style={[styles.modalButton, selectedSubcategory === item && styles.selectedModalButton]}
-                                onPress={() => selectSubcategory(item)}
-                            >
-                                <Text style={[styles.modalButtonText, selectedSubcategory === item && styles.selectedModalButtonText]}>
-                                    {item}
-                                </Text>
-                            </TouchableOpacity>
-                        )}
+                        renderItem={renderItem}
                         keyExtractor={(item) => item}
+                        contentContainerStyle={styles.listContent}
+                        showsVerticalScrollIndicator={true}
                     />
-                    <TouchableOpacity
-                        style={styles.closeButton}
-                        onPress={() => setVisible(false)}
-                    >
-                        <Text style={styles.closeButtonText}>Close</Text>
-                    </TouchableOpacity>
-                </View>
+                </Animated.View>
             </View>
         </Modal>
     );
@@ -62,17 +94,27 @@ const SubcategoryModal: React.FC<SubcategoryModalProps> = ({
 const styles = StyleSheet.create({
     modalOverlay: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'flex-end',
     },
-    modalContent: {
-        width: '80%',
-        maxHeight: '80%',
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    },
+    bottomSheetContainer: {
         backgroundColor: MY_COLORS.WHITE,
-        borderRadius: LAYOUT.BORDER_RADIUS_MEDIUM,
-        padding: LAYOUT.SPACING_MEDIUM,
-        alignItems: 'stretch',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        paddingHorizontal: LAYOUT.SPACING_MEDIUM,
+        paddingBottom: LAYOUT.SPACING_MEDIUM,
+        maxHeight: '80%',
+    },
+    handle: {
+        width: 40,
+        height: 5,
+        backgroundColor: MY_COLORS.DARK_GRAY,
+        borderRadius: 3,
+        alignSelf: 'center',
+        marginVertical: LAYOUT.SPACING_SMALL,
     },
     modalTitle: {
         fontSize: adjust(18),
@@ -80,6 +122,9 @@ const styles = StyleSheet.create({
         color: MY_COLORS.BLACK,
         marginBottom: LAYOUT.SPACING_MEDIUM,
         textAlign: 'center',
+    },
+    listContent: {
+        paddingBottom: LAYOUT.SPACING_MEDIUM,
     },
     modalButton: {
         backgroundColor: MY_COLORS.DARK_GRAY,
@@ -98,17 +143,6 @@ const styles = StyleSheet.create({
     selectedModalButtonText: {
         fontWeight: 'bold',
     },
-    closeButton: {
-        marginTop: LAYOUT.SPACING_SMALL,
-        padding: LAYOUT.SPACING_SMALL,
-        backgroundColor: MY_COLORS.BLACK,
-        borderRadius: LAYOUT.BORDER_RADIUS_MEDIUM,
-    },
-    closeButtonText: {
-        color: MY_COLORS.WHITE,
-        fontSize: adjust(16),
-        textAlign: 'center',
-    },
 });
 
-export default SubcategoryModal;
+export default SubcategoryBottomSheet;

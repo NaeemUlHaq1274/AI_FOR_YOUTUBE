@@ -12,6 +12,7 @@
     "build-aab": "npx react-native build-android --mode=release"
   },
   "dependencies": {
+    "@gorhom/bottom-sheet": "^4.6.4",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/netinfo": "^11.3.1",
