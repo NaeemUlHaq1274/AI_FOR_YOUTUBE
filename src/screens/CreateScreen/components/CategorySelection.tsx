@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { MyText } from '@components';
 import { MY_COLORS, ICONS_PATHS } from '@constants';
 import { adjust } from '@utils';
+import SettingModal from './SettingModal';
 
 interface CategorySelectionProps {
     selectedCategory: string;
@@ -19,13 +20,20 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
     handleSubcategoryPress,
     handleIconPress,
 }) => {
+    const [settingModalVisible, setSettingModalVisible] = useState(false);
     return (
         <View style={{ gap: adjust(6) }}>
-            <View style={styles.row}>
-                <MyText>{'Generate by Category'}</MyText>
-                <TouchableOpacity onPress={handleIconPress}>
-                    <Image source={ICONS_PATHS.NEXT} style={styles.nextIcon} />
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={styles.row}>
+                    <MyText>{'Generate by Category'}</MyText>
+                    <TouchableOpacity onPress={handleIconPress}>
+                        <Image source={ICONS_PATHS.NEXT} style={styles.nextIcon} />
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={() => setSettingModalVisible(true)}>
+                    <Image source={ICONS_PATHS.SETTING_ICON} style={styles.nextIcon} />
                 </TouchableOpacity>
+                <SettingModal visible={settingModalVisible} onClose={() => setSettingModalVisible(false)} />
             </View>
             <TouchableOpacity style={styles.category} onPress={handleCategoryPress}>
                 <MyText>{selectedCategory || 'Select Category'}</MyText>
@@ -46,7 +54,7 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
 const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        gap: adjust(8),
     },
     labelText: {
         color: MY_COLORS.WHITE,

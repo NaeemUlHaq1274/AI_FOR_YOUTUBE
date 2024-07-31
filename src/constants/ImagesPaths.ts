@@ -24,4 +24,5 @@ export const ICONS_PATHS = {
   NEXT: require('@assets/Dashboard/NEXT.png'),
   LOGO: require('@assets/Dashboard/LOGO.png'),
   CHEVRON: require('@assets/Dashboard/CHEVRON.png'),
+  SETTING_ICON: require('@assets/Dashboard/SETTING_ICON.png'),
 }

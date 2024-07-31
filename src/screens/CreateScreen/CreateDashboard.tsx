@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, ImageSourcePropType, TouchableOpacity, Image, Modal } from 'react-native';
-import { MY_COLORS, IMAGES_PATHS, ICONS_PATHS, DASHBOARD_ITEMS, CATEGORIES, SUBCATEGORIES } from '@constants';
+import { StyleSheet, View, ScrollView, ImageSourcePropType } from 'react-native';
+import { MY_COLORS, IMAGES_PATHS, ICONS_PATHS, DASHBOARD_ITEMS } from '@constants';
 import { adjust } from '@utils';
-import { LoadingScreen, MyButton, MyHeader, MyText, MyTextInput } from '@components';
+import { LoadingScreen, MyButton, MyHeader, MyText } from '@components';
 import RenderOption from './components/RenderOption';
 import GenerationMethodModal from './components/GenerationMethodModal';
 import CategoryModal from './components/CategoryModal';
@@ -14,7 +14,7 @@ const CreateDashboard: React.FC = () => {
   const [theme, setTheme] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<'theme' | 'category'>('theme');
+  const [selectedOption, setSelectedOption] = useState<'theme' | 'category' | 'script' | 'v-theme'>('theme');
   const [categoryModalVisible, setCategoryModalVisible] = useState<boolean>(false);
   const [subcategoryModalVisible, setSubcategoryModalVisible] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -25,10 +25,14 @@ const CreateDashboard: React.FC = () => {
       console.log('Please enter a theme');
       return;
     }
+    if (selectedOption === 'category' && (!selectedCategory || !selectedSubcategory)) {
+      console.log('Please select a category and subcategory');
+      return;
+    }
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      console.log(`Generated content for ${selectedOption}:`, selectedOption === 'theme' ? theme : selectedCategory + ' - ' + selectedSubcategory);
+      console.log(`Generated content for ${selectedOption}:`, selectedOption === 'theme' ? theme : `${selectedCategory} - ${selectedSubcategory}`);
     }, 2000);
   };
 
@@ -63,9 +67,6 @@ const CreateDashboard: React.FC = () => {
       <View style={styles.optionsContainer}>
         <View style={styles.optionsHeader}>
           <MyText p style={styles.labelText}>Choose Options</MyText>
-          <TouchableOpacity onPress={() => {/* Handle options expansion */ }}>
-            <Image source={ICONS_PATHS.NEXT} style={styles.nextIcon} />
-          </TouchableOpacity>
         </View>
         <View style={{ gap: adjust(8) }}>
           {DASHBOARD_ITEMS.map(option => (
@@ -141,11 +142,6 @@ const styles = StyleSheet.create({
   labelText: {
     color: MY_COLORS.WHITE,
   },
-  themeInput: {
-    backgroundColor: MY_COLORS.DARK_GRAY,
-    color: MY_COLORS.WHITE,
-    borderRadius: 8,
-  },
   optionsContainer: {
     gap: adjust(6),
   },
@@ -154,10 +150,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: adjust(8),
-  },
-  nextIcon: {
-    width: 24,
-    height: 24,
   },
   moreOptionsButton: {
     borderColor: MY_COLORS.PRIMARY,

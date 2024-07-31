@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 import { MyText, MyTextInput } from '@components';
 import { MY_COLORS, ICONS_PATHS } from '@constants';
 import { adjust } from '@utils';
+import SettingModal from './SettingModal';
 
 interface ThemeInputProps {
     theme: string;
@@ -11,13 +12,20 @@ interface ThemeInputProps {
 }
 
 const ThemeInput: React.FC<ThemeInputProps> = ({ theme, setTheme, handleIconPress }) => {
+    const [settingModalVisible, setSettingModalVisible] = useState(false);
     return (
         <View style={{ gap: adjust(6) }}>
-            <View style={styles.row}>
-                <MyText p style={styles.labelText}>Generate by Theme</MyText>
-                <TouchableOpacity onPress={handleIconPress}>
-                    <Image source={ICONS_PATHS.NEXT} style={styles.nextIcon} />
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={styles.row}>
+                    <MyText p style={styles.labelText}>Generate by Theme</MyText>
+                    <TouchableOpacity onPress={handleIconPress}>
+                        <Image source={ICONS_PATHS.NEXT} style={styles.nextIcon} />
+                    </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={() => setSettingModalVisible(true)}>
+                    <Image source={ICONS_PATHS.SETTING_ICON} style={styles.nextIcon} />
                 </TouchableOpacity>
+                <SettingModal visible={settingModalVisible} onClose={() => setSettingModalVisible(false)} />
             </View>
             <MyTextInput
                 placeholder="Enter the prompt for your video theme here..."
@@ -32,7 +40,7 @@ const ThemeInput: React.FC<ThemeInputProps> = ({ theme, setTheme, handleIconPres
 const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        gap: adjust(8),
     },
     labelText: {
         color: MY_COLORS.WHITE,

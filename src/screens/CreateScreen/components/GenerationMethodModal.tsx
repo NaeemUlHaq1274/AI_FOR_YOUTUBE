@@ -1,14 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Modal, TouchableOpacity, Dimensions } from 'react-native';
 import { MY_COLORS, LAYOUT } from '@constants';
-import { adjust } from '@utils';
 import { MyButton, MyText } from '@components';
 
 interface GenerationMethodModalProps {
     modalVisible: boolean;
     setModalVisible: (visible: boolean) => void;
-    selectedOption: 'category' | 'theme' | 'v-theme' | 'script';
-    setSelectedOption: (option: 'category' | 'theme' | 'v-theme' | 'script') => void;
+    selectedOption: 'theme' | 'category' | 'script' | 'v-theme';
+    setSelectedOption: (option: 'category' | 'theme') => void;
 }
 
 const GenerationMethodModal: React.FC<GenerationMethodModalProps> = ({
@@ -17,10 +16,13 @@ const GenerationMethodModal: React.FC<GenerationMethodModalProps> = ({
     selectedOption,
     setSelectedOption,
 }) => {
-    const handleOptionSelect = (option: 'category' | 'theme' | 'v-theme' | 'script') => {
+    const handleOptionSelect = (option: 'category' | 'theme') => {
         setSelectedOption(option);
         setModalVisible(false);
     };
+
+    const screenWidth = Dimensions.get('window').width;
+    const isSmallScreen = screenWidth < 360;
 
     return (
         <Modal
@@ -30,37 +32,18 @@ const GenerationMethodModal: React.FC<GenerationMethodModalProps> = ({
             onRequestClose={() => setModalVisible(false)}
         >
             <View style={styles.modalOverlay}>
-                <View style={styles.modalContent}>
-                    <View style={styles.buttonRow}>
-                        <MyButton
-                            title="Category"
-                            onPress={() => handleOptionSelect('category')}
-                            btnType={selectedOption === 'category' ? 'primary' : 'secondary'}
-                        />
-                        <MyButton
-                            title="Topic"
-                            onPress={() => handleOptionSelect('theme')}
-                            btnType={selectedOption === 'theme' ? 'primary' : 'secondary'}
-                        />
+                <View style={[styles.modalContent, isSmallScreen && styles.modalContentSmall]}>
+                    <View style={[styles.buttonContainer, isSmallScreen && styles.buttonContainerSmall]}>
+                        {['Category', 'Theme'].map((option, index) => (
+                            <MyButton
+                                key={index}
+                                title={option}
+                                onPress={() => handleOptionSelect(option.toLowerCase() as 'category' | 'theme')}
+                                btnType={selectedOption === option.toLowerCase() ? 'primary' : 'secondary'}
+                                btnWidth={isSmallScreen ? '100%' : '48%'}
+                            />
+                        ))}
                     </View>
-                    <View style={styles.buttonRow}>
-                        <MyButton
-                            title="V-Theme"
-                            onPress={() => handleOptionSelect('v-theme')}
-                            btnType={selectedOption === 'v-theme' ? 'primary' : 'secondary'}
-                        />
-                        <MyButton
-                            title="Script"
-                            onPress={() => handleOptionSelect('script')}
-                            btnType={selectedOption === 'script' ? 'primary' : 'secondary'}
-                        />
-                    </View>
-                    <TouchableOpacity
-                        style={styles.closeButton}
-                        onPress={() => setModalVisible(false)}
-                    >
-                        <MyText style={styles.closeButtonText}>Close</MyText>
-                    </TouchableOpacity>
                 </View>
             </View>
         </Modal>
@@ -75,27 +58,25 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.5)',
     },
     modalContent: {
-        width: '80%',
+        width: '90%',
+        maxWidth: 400,
         backgroundColor: MY_COLORS.DARK_GRAY,
         borderRadius: LAYOUT.BORDER_RADIUS_MEDIUM,
         padding: LAYOUT.SPACING_MEDIUM,
-        alignItems: 'stretch',
+        alignItems: 'center',
     },
-    buttonRow: {
+    modalContentSmall: {
+        width: '95%',
+        padding: LAYOUT.SPACING_SMALL,
+    },
+    buttonContainer: {
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: LAYOUT.SPACING_SMALL,
     },
-    closeButton: {
-        marginTop: LAYOUT.SPACING_SMALL,
-        padding: LAYOUT.SPACING_SMALL,
-        backgroundColor: MY_COLORS.BLACK,
-        borderRadius: LAYOUT.BORDER_RADIUS_MEDIUM,
-    },
-    closeButtonText: {
-        color: MY_COLORS.WHITE,
-        fontSize: adjust(16),
-        textAlign: 'center',
+    buttonContainerSmall: {
+        flexDirection: 'column',
     },
 });
 
