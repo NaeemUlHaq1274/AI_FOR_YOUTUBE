@@ -28,7 +28,7 @@ const ThemeInput: React.FC<ThemeInputProps> = ({ theme, setTheme, handleIconPres
                 <SettingModal visible={settingModalVisible} onClose={() => setSettingModalVisible(false)} />
             </View>
             <MyTextInput
-                placeholder="Enter the prompt for your video theme here..."
+                placeholder="Enter prompt for video theme here..."
                 value={theme}
                 onChangeText={setTheme}
                 style={styles.themeInput}
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
         color: MY_COLORS.WHITE,
     },
     nextIcon: {
-        width: 24,
-        height: 24,
+        width: 20,
+        height: 20,
     },
     themeInput: {
         backgroundColor: MY_COLORS.DARK_GRAY,
