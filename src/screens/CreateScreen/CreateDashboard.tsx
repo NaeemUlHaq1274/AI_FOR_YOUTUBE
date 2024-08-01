@@ -1,6 +1,13 @@
+// CreateDashboard.tsx
 import React, { useState } from 'react';
 import { StyleSheet, View, ScrollView, ImageSourcePropType } from 'react-native';
-import { MY_COLORS, IMAGES_PATHS, ICONS_PATHS, DASHBOARD_ITEMS } from '@constants';
+import {
+  MY_COLORS,
+  IMAGES_PATHS,
+  ICONS_PATHS,
+  DASHBOARD_ITEMS,
+  additionalOptions
+} from '@constants';
 import { adjust } from '@utils';
 import { LoadingScreen, MyButton, MyHeader, MyText } from '@components';
 import RenderOption from './components/RenderOption';
@@ -20,6 +27,7 @@ const CreateDashboard: React.FC = () => {
   const [subcategoryModalVisible, setSubcategoryModalVisible] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
+  const [showMoreOptions, setShowMoreOptions] = useState<boolean>(false);
 
   const { currentUser } = useAuth();
 
@@ -37,6 +45,10 @@ const CreateDashboard: React.FC = () => {
       setIsLoading(false);
       console.log(`Generated content for ${selectedOption}:`, selectedOption === 'theme' ? theme : `${selectedCategory} - ${selectedSubcategory}`);
     }, 2000);
+  };
+
+  const toggleMoreOptions = () => {
+    setShowMoreOptions(!showMoreOptions);
   };
 
   if (isLoading) {
@@ -71,22 +83,31 @@ const CreateDashboard: React.FC = () => {
         <View style={styles.optionsHeader}>
           <MyText p style={styles.labelText}>Choose Options</MyText>
         </View>
-        <View style={{ gap: adjust(8) }}>
+        <View style={styles.optionsWrapper}>
           {DASHBOARD_ITEMS.map(option => (
-            <RenderOption key={option} title={option} />
+            <RenderOption key={option} title={option} icon={ICONS_PATHS.PLUS} />
           ))}
         </View>
       </View>
 
-      <View style={{ gap: adjust(6) }}>
+      <View style={styles.buttonContainer}>
         <MyButton
-          title="More options"
+          title={"More options"}
           btnType="secondary"
-          onPress={() => {/* Handle more options */ }}
+          onPress={toggleMoreOptions}
           style={styles.moreOptionsButton}
           textColor={MY_COLORS.PRIMARY}
           btnWidth="100%"
+          iconPath={showMoreOptions ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON}
+          iconPosition="left"
         />
+        {showMoreOptions && (
+          <View style={styles.moreOptionsContainer}>
+            {additionalOptions.map(option => (
+              <RenderOption key={option.title} title={option.title} icon={option.icon} />
+            ))}
+          </View>
+        )}
 
         <MyButton
           title="Remove items"
@@ -106,6 +127,7 @@ const CreateDashboard: React.FC = () => {
           btnWidth="100%"
         />
       </View>
+
 
       <GenerationMethodModal
         modalVisible={modalVisible}
@@ -133,8 +155,6 @@ const CreateDashboard: React.FC = () => {
   );
 };
 
-export default CreateDashboard;
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: MY_COLORS.BLACK,
@@ -154,18 +174,32 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: adjust(8),
   },
+  optionsWrapper: {
+    gap: adjust(8),
+  },
+  buttonContainer: {
+    gap: adjust(12),
+  },
   moreOptionsButton: {
     borderColor: MY_COLORS.PRIMARY,
     borderWidth: 1,
     borderRadius: 8,
+    paddingVertical: adjust(12),
   },
   removeItemsButton: {
     borderColor: MY_COLORS.PRIMARY,
     borderWidth: 1,
     borderRadius: 8,
+    paddingVertical: adjust(12),
   },
   generateButton: {
     backgroundColor: MY_COLORS.PRIMARY,
     borderRadius: 8,
+    paddingVertical: adjust(12),
+  },
+  moreOptionsContainer: {
+    gap: adjust(8),
   },
 });
+
+export default CreateDashboard;

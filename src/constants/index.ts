@@ -6,6 +6,7 @@ export * from "./ImagesPaths"
 
 // ========== constants ===================
 import { adjust } from "@utils";
+import { ICONS_PATHS } from "./ImagesPaths";
 
 export const MY_COLORS = {
     PRIMARY: '#E4644B',
@@ -41,3 +42,12 @@ export const SUBCATEGORIES: { [key: string]: string[] } = {
     Entertainment: ['Movies', 'TV Shows', 'Comedy', 'Vlogs'],
     Technology: ['Gadgets', 'Software', 'Programming', 'Reviews'],
 };
+
+export const additionalOptions = [
+    { title: 'Language', icon: ICONS_PATHS.LANGUAGE },
+    { title: 'Region', icon: ICONS_PATHS.REGION },
+    { title: 'Channel Category', icon: ICONS_PATHS.CHANNEL_CATEGORY },
+    { title: 'Audience Target', icon: ICONS_PATHS.AUDIENCE_TARGET },
+    { title: 'Your Channel Name', icon: ICONS_PATHS.YOUR_CHANNEL },
+    { title: 'Content details', icon: ICONS_PATHS.CONTENT },
+];

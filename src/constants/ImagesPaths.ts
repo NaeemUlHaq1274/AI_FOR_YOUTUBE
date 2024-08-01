@@ -35,6 +35,14 @@ export const ICONS_PATHS = {
   TELL_A_FRIEND: require('@assets/ProfileScreen/TELL_A_FRIEND.png'),
   PRIVACY: require('@assets/ProfileScreen/PRIVACY.png'),
   SWITCH_OFF: require('@assets/ProfileScreen/SWITCH_OFF.png'),
+  CARET_DOWN: require('@assets/Dashboard/CARET_DOWN.png'),
+  CARET_UP: require('@assets/Dashboard/CARET_UP.png'),
+  YOUR_CHANNEL: require('@assets/Dashboard/YOUR_CHANNEL.png'),
+  REGION: require('@assets/Dashboard/REGION.png'),
+  LANGUAGE: require('@assets/Dashboard/LANGUAGE.png'),
+  CONTENT: require('@assets/Dashboard/CONTENT.png'),
+  CHANNEL_CATEGORY: require('@assets/Dashboard/CHANNEL_CATEGORY.png'),
+  AUDIENCE_TARGET: require('@assets/Dashboard/AUDIENCE_TARGET.png'),
 
 }
 

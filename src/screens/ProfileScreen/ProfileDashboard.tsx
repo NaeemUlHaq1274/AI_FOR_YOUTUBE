@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Image, ImageSourcePropType, TouchableOpacity, Alert } from 'react-native';
-import { ICONS_PATHS, MY_COLORS } from '@constants';
+import { View, StyleSheet, Image, ImageSourcePropType, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { ICONS_PATHS, IMAGES_PATHS, MY_COLORS } from '@constants';
 import { MyText } from '@components';
 import { adjust } from '@utils';
 import { useAuth } from '@context';
@@ -18,7 +18,7 @@ const SectionItem: React.FC<SectionItemProps> = ({ icon, title, onPress, color =
   <TouchableOpacity onPress={onPress} style={styles.sectionItem}>
     <View style={styles.sectionItemContent}>
       <Image source={icon} style={styles.sectionItemIcon} />
-      <MyText style={{ color }}>{title}</MyText>
+      <MyText style={[styles.sectionItemText, { color }]}>{title}</MyText>
     </View>
   </TouchableOpacity>
 );
@@ -41,7 +41,7 @@ const ProfileDashboard: React.FC = () => {
           onPress: async () => {
             try {
               await deleteAccount();
-              logout(); // Optionally log out after account deletion
+              logout();
             } catch (error) {
               console.error('Error deleting account:', error);
               setResults('Error deleting account. Please try again.');
@@ -55,8 +55,8 @@ const ProfileDashboard: React.FC = () => {
   const deleteAccount = async () => {
     if (currentUser) {
       try {
-        await auth().currentUser?.delete(); // Deletes the account from Firebase Authentication
-        await firestore().collection('Users').doc(currentUser.uid).delete(); // Optionally delete user data from Firestore
+        await auth().currentUser?.delete();
+        await firestore().collection('Users').doc(currentUser.uid).delete();
       } catch (error) {
         console.error('Error deleting account:', error);
         throw error;
@@ -65,11 +65,15 @@ const ProfileDashboard: React.FC = () => {
   };
 
   if (!currentUser) {
-    return <MyText style={styles.loadingText}>Loading...</MyText>;
+    return (
+      <View style={styles.container}>
+        <MyText style={styles.loadingText}>Loading...</MyText>
+      </View>
+    );
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
         {currentUser.photoURL ? (
           <Image source={{ uri: currentUser.photoURL }} style={styles.profileImage} />
@@ -77,52 +81,82 @@ const ProfileDashboard: React.FC = () => {
           <View style={styles.placeholderImage} />
         )}
         <View style={styles.headerTextContainer}>
-          <MyText style={styles.userName} p bold>{currentUser.displayName || 'User Name'}</MyText>
-          <MyText style={styles.userEmail} p color={MY_COLORS.DARK_GRAY}>{currentUser.email || 'example@gmail.com'}</MyText>
+          <MyText style={styles.userName} p bold>
+            {currentUser.displayName || 'User Name'}
+          </MyText>
+          <MyText style={styles.userEmail} p color={MY_COLORS.DARK_GRAY}>
+            {currentUser.email || 'example@gmail.com'}
+          </MyText>
         </View>
       </View>
 
+      <Image source={ICONS_PATHS.LOGO} style={styles.logo} />
+
       <View style={styles.section}>
-        <MyText style={styles.sectionTitle} p bold>Go premium now!</MyText>
-        <SectionItem icon={ICONS_PATHS.MANAGE_SUBSCRIPTION_ICON} title="Manage subscription" onPress={() => { }} />
+        <MyText style={styles.sectionTitle} p bold>
+          Go premium now!
+        </MyText>
+        <SectionItem
+          icon={ICONS_PATHS.MANAGE_SUBSCRIPTION_ICON}
+          title="Manage subscription"
+          onPress={() => { }}
+        />
       </View>
+
       <View style={styles.divider} />
 
       <View style={styles.section}>
-        <MyText style={styles.sectionTitle} p bold>Help & support</MyText>
+        <MyText style={styles.sectionTitle} p bold>
+          Help & support
+        </MyText>
         <SectionItem icon={ICONS_PATHS.ALERT_ICON} title="Report a problem" onPress={() => { }} />
         <SectionItem icon={ICONS_PATHS.HELP_CENTER_ICON} title="Help center" onPress={() => { }} />
       </View>
+
       <View style={styles.divider} />
 
       <View style={styles.section}>
-        <MyText style={styles.sectionTitle} p bold>Privacy setting</MyText>
+        <MyText style={styles.sectionTitle} p bold>
+          Privacy setting
+        </MyText>
         <SectionItem icon={ICONS_PATHS.TERM_CONDITION_ICON} title="Terms & Conditions" onPress={() => { }} />
         <SectionItem icon={ICONS_PATHS.PRIVACY} title="Privacy & Policy" onPress={() => { }} />
         <SectionItem icon={ICONS_PATHS.TELL_A_FRIEND} title="Tell a friend" onPress={() => { }} />
         <SectionItem icon={ICONS_PATHS.FEEDBACK_ICON} title="Feedback" onPress={() => { }} />
       </View>
+
       <View style={styles.divider} />
 
       <View style={styles.section}>
-        <SectionItem icon={ICONS_PATHS.DELETE_ICON} title="Delete account" onPress={handleDeleteAccount} color={MY_COLORS.PRIMARY} />
-        <SectionItem icon={ICONS_PATHS.SWITCH_OFF} title="Log out" onPress={logout} color={MY_COLORS.PRIMARY} />
+        <SectionItem
+          icon={ICONS_PATHS.DELETE_ICON}
+          title="Delete account"
+          onPress={handleDeleteAccount}
+          color={MY_COLORS.PRIMARY}
+        />
+        <SectionItem
+          icon={ICONS_PATHS.SWITCH_OFF}
+          title="Log out"
+          onPress={logout}
+          color={MY_COLORS.PRIMARY}
+        />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: MY_COLORS.BLACK,
-    padding: adjust(14),
+    paddingHorizontal: adjust(12),
+    paddingVertical: adjust(8),
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     height: 100,
-    gap: adjust(6),
+    gap: adjust(12),
   },
   profileImage: {
     width: 50,
@@ -134,7 +168,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: '#ccc', // Placeholder color
+    backgroundColor: '#ccc',
     flexShrink: 0,
   },
   headerTextContainer: {
@@ -143,15 +177,22 @@ const styles = StyleSheet.create({
   },
   userName: {
     color: MY_COLORS.WHITE,
+    textTransform: "capitalize",
   },
   userEmail: {
     color: MY_COLORS.DARK_GRAY,
+  },
+  logo: {
+    width: '50%',
+    height: 50,
+    resizeMode: 'contain',
+    marginBottom: 12,
   },
   section: {
     flexDirection: 'column',
     justifyContent: 'center',
     height: 'auto',
-    gap: adjust(12),
+    gap: adjust(16),
   },
   sectionTitle: {
     color: MY_COLORS.WHITE,
@@ -178,12 +219,11 @@ const styles = StyleSheet.create({
   divider: {
     height: 1,
     backgroundColor: MY_COLORS.DARK_GRAY,
-    marginVertical: adjust(6),
+    marginVertical: adjust(12),
   },
   loadingText: {
     color: MY_COLORS.WHITE,
     textAlign: 'center',
-    marginTop: adjust(20),
   },
 });
 

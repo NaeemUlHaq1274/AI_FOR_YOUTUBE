@@ -1,18 +1,21 @@
+// RenderOption.tsx
 import React from 'react';
-import { TouchableOpacity, View, Image, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Image, StyleSheet, ImageSourcePropType } from 'react-native';
 import { MY_COLORS, ICONS_PATHS } from '@constants';
 import { adjust } from '@utils';
 import { MyText } from '@components';
 
 interface RenderOptionProps {
     title: string;
+    icon: ImageSourcePropType;
+    onIconPress?: () => void;
 }
 
-const RenderOption: React.FC<RenderOptionProps> = ({ title }) => (
-    <View style={styles.optionButton} >
+const RenderOption: React.FC<RenderOptionProps> = ({ title, icon, onIconPress }) => (
+    <View style={styles.optionButton}>
         <MyText cp color={MY_COLORS.WHITE}>{title}</MyText>
         <TouchableOpacity>
-            <Image source={ICONS_PATHS.PLUS} />
+            <Image source={icon} />
         </TouchableOpacity>
     </View>
 );
@@ -26,11 +29,10 @@ const styles = StyleSheet.create({
         padding: adjust(8),
         borderRadius: 8,
     },
-    iconWrapper: {
-        borderRadius: adjust(12.5),
-        backgroundColor: MY_COLORS.PRIMARY,
-        justifyContent: 'center',
-        alignItems: 'center',
+    icon: {
+        width: adjust(20),
+        height: adjust(20),
+        marginRight: adjust(10),
     },
 });
 
