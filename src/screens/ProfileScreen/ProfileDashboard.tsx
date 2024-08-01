@@ -1,8 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Image, ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, ImageSourcePropType, TouchableOpacity, Alert } from 'react-native';
 import { ICONS_PATHS, MY_COLORS } from '@constants';
 import { MyText } from '@components';
 import { adjust } from '@utils';
+import { useAuth } from '@context';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 interface SectionItemProps {
   icon: ImageSourcePropType;
@@ -21,13 +24,57 @@ const SectionItem: React.FC<SectionItemProps> = ({ icon, title, onPress, color =
 );
 
 const ProfileDashboard: React.FC = () => {
+  const { currentUser, logout, setResults } = useAuth();
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your account? This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteAccount();
+              logout(); // Optionally log out after account deletion
+            } catch (error) {
+              console.error('Error deleting account:', error);
+              setResults('Error deleting account. Please try again.');
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const deleteAccount = async () => {
+    if (currentUser) {
+      try {
+        await auth().currentUser?.delete(); // Deletes the account from Firebase Authentication
+        await firestore().collection('Users').doc(currentUser.uid).delete(); // Optionally delete user data from Firestore
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        throw error;
+      }
+    }
+  };
+
+  if (!currentUser) {
+    return <MyText style={styles.loadingText}>Loading...</MyText>;
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Image source={ICONS_PATHS.USER_PROFILE} style={styles.profileImage} />
         <View style={styles.headerTextContainer}>
-          <MyText style={styles.userName} p bold>User Name</MyText>
-          <MyText style={styles.userEmail} p color={MY_COLORS.DARK_GRAY}>example@gmail.com</MyText>
+          <MyText style={styles.userName} p bold>{currentUser.displayName || 'User Name'}</MyText>
+          <MyText style={styles.userEmail} p color={MY_COLORS.DARK_GRAY}>{currentUser.email || 'example@gmail.com'}</MyText>
         </View>
       </View>
 
@@ -54,8 +101,8 @@ const ProfileDashboard: React.FC = () => {
       <View style={styles.divider} />
 
       <View style={styles.section}>
-        <SectionItem icon={ICONS_PATHS.DELETE_ICON} title="Delete account" onPress={() => { }} color={MY_COLORS.PRIMARY} />
-        <SectionItem icon={ICONS_PATHS.SWITCH_OFF} title="Log out" onPress={() => { }} color={MY_COLORS.PRIMARY} />
+        <SectionItem icon={ICONS_PATHS.DELETE_ICON} title="Delete account" onPress={handleDeleteAccount} color={MY_COLORS.PRIMARY} />
+        <SectionItem icon={ICONS_PATHS.SWITCH_OFF} title="Log out" onPress={logout} color={MY_COLORS.PRIMARY} />
       </View>
     </View>
   );
@@ -70,7 +117,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 100, // Adjust based on the content
+    height: 100,
     gap: adjust(6),
   },
   profileImage: {
@@ -92,7 +139,7 @@ const styles = StyleSheet.create({
   section: {
     flexDirection: 'column',
     justifyContent: 'center',
-    height: 'auto', // Adjust based on the content
+    height: 'auto',
     gap: adjust(12),
   },
   sectionTitle: {
@@ -102,7 +149,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 'auto', // Adjust based on the content
+    height: 'auto',
   },
   sectionItemContent: {
     flexDirection: 'row',
@@ -121,6 +168,11 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: MY_COLORS.DARK_GRAY,
     marginVertical: adjust(6),
+  },
+  loadingText: {
+    color: MY_COLORS.WHITE,
+    textAlign: 'center',
+    marginTop: adjust(20),
   },
 });
 
