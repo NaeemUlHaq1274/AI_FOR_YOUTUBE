@@ -71,7 +71,11 @@ const ProfileDashboard: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={ICONS_PATHS.USER_PROFILE} style={styles.profileImage} />
+        {currentUser.photoURL ? (
+          <Image source={{ uri: currentUser.photoURL }} style={styles.profileImage} />
+        ) : (
+          <View style={styles.placeholderImage} />
+        )}
         <View style={styles.headerTextContainer}>
           <MyText style={styles.userName} p bold>{currentUser.displayName || 'User Name'}</MyText>
           <MyText style={styles.userEmail} p color={MY_COLORS.DARK_GRAY}>{currentUser.email || 'example@gmail.com'}</MyText>
@@ -124,6 +128,13 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
+    flexShrink: 0,
+  },
+  placeholderImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#ccc', // Placeholder color
     flexShrink: 0,
   },
   headerTextContainer: {

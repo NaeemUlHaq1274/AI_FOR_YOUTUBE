@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   rightIcon: {
     width: adjust(40),
     height: adjust(40),
-    borderRadius: 15,
+    borderRadius: adjust(20),
   },
 });
 

@@ -9,6 +9,7 @@ import CategoryModal from './components/CategoryModal';
 import SubcategoryModal from './components/SubcategoryModal';
 import ThemeInput from './components/ThemeInput';
 import CategorySelection from './components/CategorySelection';
+import { useAuth } from '@context';
 
 const CreateDashboard: React.FC = () => {
   const [theme, setTheme] = useState<string>('');
@@ -19,6 +20,8 @@ const CreateDashboard: React.FC = () => {
   const [subcategoryModalVisible, setSubcategoryModalVisible] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
+
+  const { currentUser } = useAuth();
 
   const handleGenerate = () => {
     if (selectedOption === 'theme' && theme.trim() === '') {
@@ -48,7 +51,7 @@ const CreateDashboard: React.FC = () => {
           title="Creator BOOST"
           iconPath={IMAGES_PATHS.BLACK_FEEDBACK as ImageSourcePropType}
           onPressIcon={() => {/* Handle menu press */ }}
-          rightIcon={ICONS_PATHS.USER_PROFILE}
+          rightIcon={currentUser?.photoURL ? { uri: currentUser.photoURL } : ICONS_PATHS.USER_PROFILE}
         />
       </View>
 

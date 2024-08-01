@@ -15,6 +15,7 @@ interface User {
   uid: string;
   email: string | null;
   displayName: string | null;
+  photoURL: string | null; // Added photoURL
 }
 
 interface AuthContextType {
@@ -52,18 +53,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return () => subscriber();
   }, []);
 
-
-
   const onAuthStateChanged = async (authUser: any) => {
-
-    setLoading(true)
+    setLoading(true);
     if (authUser) {
       const fireStoreUser = await getUserFromFireStore(authUser?.uid);
       if (!fireStoreUser) {
         await addUserToFireStore(authUser);
       }
 
-      setCurrentUser(authUser);
+      setCurrentUser({
+        uid: authUser.uid,
+        email: authUser.email,
+        displayName: authUser.displayName,
+        photoURL: authUser.photoURL, // Set photoURL
+        jobSearchToken: 0, // Initialize jobSearchToken if needed
+      });
       setLoading(false);
     } else {
       setCurrentUser(null);
@@ -85,11 +89,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const addUserToFireStore = async (authUser: any) => {
     try {
-      const { uid, email, displayName } = authUser;
+      const { uid, email, displayName, photoURL } = authUser;
       await firestore().collection('Users').doc(uid).set({
         uid,
         email,
         displayName,
+        photoURL, // Store photoURL
         createdAt: new Date(),
       });
     } catch (error) {
@@ -111,7 +116,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const logout = async () => {
     try {
-      setCurrentUser(null)
+      setCurrentUser(null);
       await auth().signOut();
       await GoogleSignin.revokeAccess();
       console.log('Logout successful');
@@ -119,7 +124,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       console.error('Error logging out:', error.message);
     }
   };
-
 
   const value = {
     initializing,
