@@ -9,10 +9,12 @@ interface RenderOptionProps {
 }
 
 const RenderOption: React.FC<RenderOptionProps> = ({ title }) => (
-    <TouchableOpacity style={styles.optionButton}>
+    <View style={styles.optionButton} >
         <MyText cp color={MY_COLORS.WHITE}>{title}</MyText>
-        <Image source={ICONS_PATHS.PLUS} />
-    </TouchableOpacity>
+        <TouchableOpacity>
+            <Image source={ICONS_PATHS.PLUS} />
+        </TouchableOpacity>
+    </View>
 );
 
 const styles = StyleSheet.create({

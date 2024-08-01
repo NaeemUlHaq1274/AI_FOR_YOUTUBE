@@ -1,4 +1,4 @@
-import { ICONS_PATHS } from '@constants';
+import { ICONS_PATHS, MY_COLORS } from '@constants';
 import { adjust } from '@utils';
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, ImageSourcePropType, StyleSheet } from 'react-native';
@@ -12,7 +12,7 @@ interface MyHeaderProps {
 
 const MyHeader: React.FC<MyHeaderProps> = ({ color, title, iconPath, onPressIcon, rightIcon }) => {
   return (
-    <View style={[styles.header, { backgroundColor: color }]}>
+    <View style={[styles.header, {}]}>
       <TouchableOpacity onPress={onPressIcon}>
         <Image source={ICONS_PATHS.LOGO} style={styles.icon} />
       </TouchableOpacity>

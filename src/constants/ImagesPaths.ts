@@ -25,4 +25,22 @@ export const ICONS_PATHS = {
   LOGO: require('@assets/Dashboard/LOGO.png'),
   CHEVRON: require('@assets/Dashboard/CHEVRON.png'),
   SETTING_ICON: require('@assets/Dashboard/SETTING_ICON.png'),
+  ALERT_ICON: require('@assets/ProfileScreen/ALERT.png'),
+  DELETE_ICON: require('@assets/ProfileScreen/DELETE.png'),
+  FEEDBACK_ICON: require('@assets/ProfileScreen/FEEDBACK.png'),
+  HELP_CENTER_ICON: require('@assets/ProfileScreen/HELP_CENTER.png'),
+  MANAGE_SUBSCRIPTION_ICON: require('@assets/ProfileScreen/MANAGE_SUBSCRIPTION.png'),
+  SWITCH_OFF_ICON: require('@assets/ProfileScreen/SWITCH_OFF.png'),
+  TERM_CONDITION_ICON: require('@assets/ProfileScreen/TERM_CONDITION.png'),
+  TELL_A_FRIEND: require('@assets/ProfileScreen/TELL_A_FRIEND.png'),
+  PRIVACY: require('@assets/ProfileScreen/PRIVACY.png'),
+  SWITCH_OFF: require('@assets/ProfileScreen/SWITCH_OFF.png'),
+
+}
+
+export const IMAGE_SAVEDS = {
+  IMAGE_SAVEDS_1: require('@assets/SavedScreen/IMAGE_SAVED_SCREEN.png')
+}
+
+export const PROFILE_SCREEN = {
 }
