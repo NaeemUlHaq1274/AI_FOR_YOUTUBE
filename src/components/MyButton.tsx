@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TouchableOpacity, Text, StyleSheet, Image, ImageSourcePropType, View } from 'react-native';
 import { MY_COLORS } from '@constants';
 import { adjust } from '@utils';
@@ -13,6 +13,8 @@ interface MyButtonProps {
   iconPosition?: 'left' | 'right';
   textColor?: string;
   justifyContent?: 'center' | 'space-between';
+  disabled?: boolean;
+  iconSize?: number;
 }
 
 const MyButton: React.FC<MyButtonProps> = ({
@@ -25,19 +27,45 @@ const MyButton: React.FC<MyButtonProps> = ({
   iconPosition = 'left',
   textColor = MY_COLORS.WHITE,
   justifyContent = 'center',
+  disabled = false,
+  iconSize = 16,
 }) => {
+  const buttonStyle = useMemo(() => [
+    styles.button,
+    btnType === 'secondary' && styles.secondaryButton,
+    { width: btnWidth },
+    disabled && styles.disabledButton,
+    style,
+  ], [btnType, btnWidth, disabled, style]);
+
+  const contentContainerStyle = useMemo(() => [
+    styles.contentContainer,
+    { justifyContent },
+  ], [justifyContent]);
+
+  const textStyle = useMemo(() => [
+    styles.buttonText,
+    { color: disabled ? MY_COLORS.DARK_GRAY : textColor },
+  ], [textColor, disabled]);
+
+  const iconStyle = useMemo(() => [
+    styles.icon,
+    { width: adjust(iconSize), height: adjust(iconSize) },
+  ], [iconSize]);
+
   const renderIcon = () => (
-    iconPath && <Image source={iconPath} style={styles.icon} />
+    iconPath && <Image source={iconPath} style={iconStyle} />
   );
 
   return (
     <TouchableOpacity
-      style={[styles.button, btnType === 'secondary' && styles.secondaryButton, { width: btnWidth }, style]}
+      style={buttonStyle}
       onPress={onPress}
+      disabled={disabled}
     >
-      <View style={[styles.contentContainer, { justifyContent }]}>
+      <View style={contentContainerStyle}>
         {iconPosition === 'left' && renderIcon()}
-        <Text style={[styles.buttonText, { color: textColor }]}>{title}</Text>
+        <Text style={textStyle}>{title}</Text>
         {iconPosition === 'right' && renderIcon()}
       </View>
     </TouchableOpacity>
@@ -55,6 +83,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: 'transparent',
   },
+  disabledButton: {
+    opacity: 0.5,
+  },
   contentContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -65,8 +96,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   icon: {
-    width: adjust(16),
-    height: adjust(16),
     marginHorizontal: adjust(6),
   },
 });

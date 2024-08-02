@@ -1,12 +1,11 @@
-// CreateDashboard.tsx
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { StyleSheet, View, ScrollView, ImageSourcePropType } from 'react-native';
 import {
   MY_COLORS,
   IMAGES_PATHS,
   ICONS_PATHS,
   DASHBOARD_ITEMS,
-  additionalOptions
+  ADDITIONAL_OPTIONS,
 } from '@constants';
 import { adjust } from '@utils';
 import { LoadingScreen, MyButton, MyHeader, MyText } from '@components';
@@ -28,10 +27,12 @@ const CreateDashboard: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
   const [showMoreOptions, setShowMoreOptions] = useState<boolean>(false);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [showRemoveItems, setShowRemoveItems] = useState<boolean>(false);
 
   const { currentUser } = useAuth();
 
-  const handleGenerate = () => {
+  const handleGenerate = useCallback(() => {
     if (selectedOption === 'theme' && theme.trim() === '') {
       console.log('Please enter a theme');
       return;
@@ -45,11 +46,33 @@ const CreateDashboard: React.FC = () => {
       setIsLoading(false);
       console.log(`Generated content for ${selectedOption}:`, selectedOption === 'theme' ? theme : `${selectedCategory} - ${selectedSubcategory}`);
     }, 2000);
-  };
+  }, [selectedOption, theme, selectedCategory, selectedSubcategory]);
 
-  const toggleMoreOptions = () => {
-    setShowMoreOptions(!showMoreOptions);
-  };
+  const toggleMoreOptions = useCallback(() => {
+    setShowMoreOptions((prev) => !prev);
+  }, []);
+
+  const handleItemClick = useCallback((item: string) => {
+    setSelectedItems((prevItems) =>
+      prevItems.includes(item) ? prevItems.filter((i) => i !== item) : [...prevItems, item]
+    );
+  }, []);
+
+  const toggleShowRemoveItems = useCallback(() => {
+    setShowRemoveItems((prev) => !prev);
+  }, []);
+
+  const availableItems = useMemo(() =>
+    DASHBOARD_ITEMS.filter(item => !selectedItems.includes(item)),
+    [selectedItems]);
+
+  const isRemoveButtonDisabled = useMemo(() =>
+    selectedItems.length === 0,
+    [selectedItems]);
+
+  const allItemsSelected = useMemo(() =>
+    availableItems.length === 0,
+    [availableItems]);
 
   if (isLoading) {
     return <LoadingScreen description="Generating your video content..." />;
@@ -84,26 +107,32 @@ const CreateDashboard: React.FC = () => {
           <MyText p style={styles.labelText}>Choose Options</MyText>
         </View>
         <View style={styles.optionsWrapper}>
-          {DASHBOARD_ITEMS.map(option => (
-            <RenderOption key={option} title={option} icon={ICONS_PATHS.PLUS} />
+          {availableItems.map(option => (
+            <RenderOption
+              key={option}
+              title={option}
+              icon={ICONS_PATHS.PLUS}
+              onPress={() => handleItemClick(option)}
+            />
           ))}
+          {allItemsSelected && <View style={styles.whiteSpace} />}
         </View>
       </View>
 
       <View style={styles.buttonContainer}>
         <MyButton
-          title={"More options"}
+          title="More options"
           btnType="secondary"
           onPress={toggleMoreOptions}
           style={styles.moreOptionsButton}
           textColor={MY_COLORS.PRIMARY}
           btnWidth="100%"
           iconPath={showMoreOptions ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON}
-          iconPosition="left"
+          iconPosition="right"
         />
         {showMoreOptions && (
           <View style={styles.moreOptionsContainer}>
-            {additionalOptions.map(option => (
+            {ADDITIONAL_OPTIONS.map(option => (
               <RenderOption key={option.title} title={option.title} icon={option.icon} />
             ))}
           </View>
@@ -112,11 +141,30 @@ const CreateDashboard: React.FC = () => {
         <MyButton
           title="Remove items"
           btnType="secondary"
-          onPress={() => {/* Handle remove items */ }}
-          style={styles.removeItemsButton}
-          textColor={MY_COLORS.PRIMARY}
+          onPress={toggleShowRemoveItems}
+          style={[
+            styles.removeItemsButton,
+            isRemoveButtonDisabled && styles.disabledButton
+          ]}
+          textColor={isRemoveButtonDisabled ? MY_COLORS.DARK_GRAY : MY_COLORS.PRIMARY}
           btnWidth="100%"
+          iconPath={showRemoveItems ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON}
+          iconPosition="right"
+          disabled={isRemoveButtonDisabled}
         />
+
+        {showRemoveItems && !isRemoveButtonDisabled && (
+          <View style={styles.removeItemsContainer}>
+            {selectedItems.map(item => (
+              <RenderOption
+                key={item}
+                title={item}
+                icon={ICONS_PATHS.MINUS}
+                onPress={() => handleItemClick(item)}
+              />
+            ))}
+          </View>
+        )}
 
         <MyButton
           title="Generate now"
@@ -127,7 +175,6 @@ const CreateDashboard: React.FC = () => {
           btnWidth="100%"
         />
       </View>
-
 
       <GenerationMethodModal
         modalVisible={modalVisible}
@@ -192,6 +239,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: adjust(12),
   },
+  disabledButton: {
+    borderColor: MY_COLORS.DARK_GRAY,
+  },
   generateButton: {
     backgroundColor: MY_COLORS.PRIMARY,
     borderRadius: 8,
@@ -199,6 +249,12 @@ const styles = StyleSheet.create({
   },
   moreOptionsContainer: {
     gap: adjust(8),
+  },
+  removeItemsContainer: {
+    gap: adjust(8),
+  },
+  whiteSpace: {
+    height: adjust(60),
   },
 });
 

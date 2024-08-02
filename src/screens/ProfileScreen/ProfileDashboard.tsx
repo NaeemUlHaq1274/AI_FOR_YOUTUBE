@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, StyleSheet, Image, ImageSourcePropType, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { ICONS_PATHS, IMAGES_PATHS, MY_COLORS } from '@constants';
 import { MyText } from '@components';
@@ -26,7 +26,7 @@ const SectionItem: React.FC<SectionItemProps> = ({ icon, title, onPress, color =
 const ProfileDashboard: React.FC = () => {
   const { currentUser, logout, setResults } = useAuth();
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = useCallback(() => {
     Alert.alert(
       'Delete Account',
       'Are you sure you want to delete your account? This action cannot be undone.',
@@ -50,19 +50,48 @@ const ProfileDashboard: React.FC = () => {
         },
       ]
     );
-  };
+  }, [logout, setResults]);
 
-  const deleteAccount = async () => {
-    if (currentUser) {
-      try {
-        await auth().currentUser?.delete();
-        await firestore().collection('Users').doc(currentUser.uid).delete();
-      } catch (error) {
-        console.error('Error deleting account:', error);
-        throw error;
-      }
+  const deleteAccount = useCallback(async () => {
+    if (!currentUser) return;
+
+    try {
+      await auth().currentUser?.delete();
+      await firestore().collection('Users').doc(currentUser.uid).delete();
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      throw error;
     }
-  };
+  }, [currentUser]);
+
+  const renderHeader = () => (
+    <View style={styles.header}>
+      {currentUser?.photoURL ? (
+        <Image source={{ uri: currentUser.photoURL }} style={styles.profileImage} />
+      ) : (
+        <View style={styles.placeholderImage} />
+      )}
+      <View style={styles.headerTextContainer}>
+        <MyText style={styles.userName} p bold>
+          {currentUser?.displayName || 'User Name'}
+        </MyText>
+        <MyText style={styles.userEmail} p color={MY_COLORS.DARK_GRAY}>
+          {currentUser?.email || 'example@gmail.com'}
+        </MyText>
+      </View>
+    </View>
+  );
+
+  const renderSection = (title: string, items: SectionItemProps[]) => (
+    <View style={styles.section}>
+      <MyText style={styles.sectionTitle} p bold>
+        {title}
+      </MyText>
+      {items.map((item, index) => (
+        <SectionItem key={index} {...item} />
+      ))}
+    </View>
+  );
 
   if (!currentUser) {
     return (
@@ -74,73 +103,35 @@ const ProfileDashboard: React.FC = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.header}>
-        {currentUser.photoURL ? (
-          <Image source={{ uri: currentUser.photoURL }} style={styles.profileImage} />
-        ) : (
-          <View style={styles.placeholderImage} />
-        )}
-        <View style={styles.headerTextContainer}>
-          <MyText style={styles.userName} p bold>
-            {currentUser.displayName || 'User Name'}
-          </MyText>
-          <MyText style={styles.userEmail} p color={MY_COLORS.DARK_GRAY}>
-            {currentUser.email || 'example@gmail.com'}
-          </MyText>
-        </View>
-      </View>
-
+      {renderHeader()}
       <Image source={ICONS_PATHS.LOGO} style={styles.logo} />
 
-      <View style={styles.section}>
-        <MyText style={styles.sectionTitle} p bold>
-          Go premium now!
-        </MyText>
-        <SectionItem
-          icon={ICONS_PATHS.MANAGE_SUBSCRIPTION_ICON}
-          title="Manage subscription"
-          onPress={() => { }}
-        />
-      </View>
+      {renderSection('Go premium now!', [
+        { icon: ICONS_PATHS.MANAGE_SUBSCRIPTION_ICON, title: "Manage subscription", onPress: () => { } },
+      ])}
 
       <View style={styles.divider} />
 
-      <View style={styles.section}>
-        <MyText style={styles.sectionTitle} p bold>
-          Help & support
-        </MyText>
-        <SectionItem icon={ICONS_PATHS.ALERT_ICON} title="Report a problem" onPress={() => { }} />
-        <SectionItem icon={ICONS_PATHS.HELP_CENTER_ICON} title="Help center" onPress={() => { }} />
-      </View>
+      {renderSection('Help & support', [
+        { icon: ICONS_PATHS.ALERT_ICON, title: "Report a problem", onPress: () => { } },
+        { icon: ICONS_PATHS.HELP_CENTER_ICON, title: "Help center", onPress: () => { } },
+      ])}
 
       <View style={styles.divider} />
 
-      <View style={styles.section}>
-        <MyText style={styles.sectionTitle} p bold>
-          Privacy setting
-        </MyText>
-        <SectionItem icon={ICONS_PATHS.TERM_CONDITION_ICON} title="Terms & Conditions" onPress={() => { }} />
-        <SectionItem icon={ICONS_PATHS.PRIVACY} title="Privacy & Policy" onPress={() => { }} />
-        <SectionItem icon={ICONS_PATHS.TELL_A_FRIEND} title="Tell a friend" onPress={() => { }} />
-        <SectionItem icon={ICONS_PATHS.FEEDBACK_ICON} title="Feedback" onPress={() => { }} />
-      </View>
+      {renderSection('Privacy setting', [
+        { icon: ICONS_PATHS.TERM_CONDITION_ICON, title: "Terms & Conditions", onPress: () => { } },
+        { icon: ICONS_PATHS.PRIVACY, title: "Privacy & Policy", onPress: () => { } },
+        { icon: ICONS_PATHS.TELL_A_FRIEND, title: "Tell a friend", onPress: () => { } },
+        { icon: ICONS_PATHS.FEEDBACK_ICON, title: "Feedback", onPress: () => { } },
+      ])}
 
       <View style={styles.divider} />
 
-      <View style={styles.section}>
-        <SectionItem
-          icon={ICONS_PATHS.DELETE_ICON}
-          title="Delete account"
-          onPress={handleDeleteAccount}
-          color={MY_COLORS.PRIMARY}
-        />
-        <SectionItem
-          icon={ICONS_PATHS.SWITCH_OFF}
-          title="Log out"
-          onPress={logout}
-          color={MY_COLORS.PRIMARY}
-        />
-      </View>
+      {renderSection('', [
+        { icon: ICONS_PATHS.DELETE_ICON, title: "Delete account", onPress: handleDeleteAccount, color: MY_COLORS.PRIMARY },
+        { icon: ICONS_PATHS.SWITCH_OFF, title: "Log out", onPress: logout, color: MY_COLORS.PRIMARY },
+      ])}
     </ScrollView>
   );
 };

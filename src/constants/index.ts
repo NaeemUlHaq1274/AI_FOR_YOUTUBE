@@ -43,7 +43,7 @@ export const SUBCATEGORIES: { [key: string]: string[] } = {
     Technology: ['Gadgets', 'Software', 'Programming', 'Reviews'],
 };
 
-export const additionalOptions = [
+export const ADDITIONAL_OPTIONS = [
     { title: 'Language', icon: ICONS_PATHS.LANGUAGE },
     { title: 'Region', icon: ICONS_PATHS.REGION },
     { title: 'Channel Category', icon: ICONS_PATHS.CHANNEL_CATEGORY },

@@ -18,6 +18,7 @@ export const IMAGES_PATHS = {
 
 export const ICONS_PATHS = {
   PLUS: require('@assets/Dashboard/PLUS_BTN.png'),
+  MINUS: require('@assets/Dashboard/MINUS.png'),
   USER_PROFILE: require('@assets/Dashboard/USER_PROFILE.png'),
   GENERATE_ICON: require('@assets/Dashboard/GENERATE_ICON.png'),
   MENU: require('@assets/Dashboard/MENU.png'),
