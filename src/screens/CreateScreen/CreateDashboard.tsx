@@ -102,22 +102,23 @@ const CreateDashboard: React.FC = () => {
         />
       )}
 
-      <View style={styles.optionsContainer}>
-        <View style={styles.optionsHeader}>
-          <MyText p style={styles.labelText}>Choose Options</MyText>
+      {!allItemsSelected && (
+        <View style={styles.optionsContainer}>
+          <View style={styles.optionsHeader}>
+            <MyText p style={styles.labelText}>Choose Options</MyText>
+          </View>
+          <View style={styles.optionsWrapper}>
+            {availableItems.map(option => (
+              <RenderOption
+                key={option}
+                title={option}
+                icon={ICONS_PATHS.PLUS}
+                onPress={() => handleItemClick(option)}
+              />
+            ))}
+          </View>
         </View>
-        <View style={styles.optionsWrapper}>
-          {availableItems.map(option => (
-            <RenderOption
-              key={option}
-              title={option}
-              icon={ICONS_PATHS.PLUS}
-              onPress={() => handleItemClick(option)}
-            />
-          ))}
-          {allItemsSelected && <View style={styles.whiteSpace} />}
-        </View>
-      </View>
+      )}
 
       <View style={styles.buttonContainer}>
         <MyButton
@@ -252,9 +253,6 @@ const styles = StyleSheet.create({
   },
   removeItemsContainer: {
     gap: adjust(8),
-  },
-  whiteSpace: {
-    height: adjust(60),
   },
 });
 
