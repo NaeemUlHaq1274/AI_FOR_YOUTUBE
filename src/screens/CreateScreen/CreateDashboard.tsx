@@ -8,7 +8,7 @@ import {
   ADDITIONAL_OPTIONS,
 } from '@constants';
 import { adjust } from '@utils';
-import { LoadingScreen, MyButton, MyHeader, MyText } from '@components';
+import { LoadingScreen, MyButton, MyHeader, MyScrollableContainer, MyText } from '@components';
 import RenderOption from './components/RenderOption';
 import GenerationMethodModal from './components/GenerationMethodModal';
 import CategoryModal from './components/CategoryModal';
@@ -79,7 +79,7 @@ const CreateDashboard: React.FC = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <MyScrollableContainer contentContainerStyle={{gap:20}} >
       <View>
         <MyHeader
           color={MY_COLORS.BLACK}
@@ -199,17 +199,11 @@ const CreateDashboard: React.FC = () => {
         selectedSubcategory={selectedSubcategory}
         setSelectedSubcategory={setSelectedSubcategory}
       />
-    </ScrollView>
+    </MyScrollableContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: MY_COLORS.BLACK,
-    paddingHorizontal: adjust(12),
-    paddingVertical: adjust(8),
-    gap: adjust(20),
-  },
   labelText: {
     color: MY_COLORS.WHITE,
   },

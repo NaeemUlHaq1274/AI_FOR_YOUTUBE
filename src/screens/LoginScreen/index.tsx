@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 12,
     justifyContent: "center",
-    gap: LAYOUT.SPACING_LARGE
+    gap: LAYOUT.SPACING_LARGE,
+    backgroundColor:MY_COLORS.BLACK,
   },
   topBox: { alignItems: 'center', justifyContent: 'flex-end' },
   googleBtn: { flexDirection: "row", justifyContent: "center", gap: 12, borderRadius: 8, backgroundColor: MY_COLORS.PRIMARY, paddingVertical: 12, width: "95%", alignSelf: "center" },

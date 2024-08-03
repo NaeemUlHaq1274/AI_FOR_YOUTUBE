@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import analytics from '@react-native-firebase/analytics';
-import { useSubscriptionContext } from '@context';
 import MyText from '../MyText';
 import { MY_COLORS } from '@constants';
 

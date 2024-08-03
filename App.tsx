@@ -42,6 +42,7 @@ const App = () => {
         <AuthProvider>
           <GestureHandlerRootView style={{ flex: 1, }}>
             <AuthNavigator />
+            {/* <BottomTabNavigation /> */}
           </GestureHandlerRootView>
         </AuthProvider>
       </ErrorBoundary>
