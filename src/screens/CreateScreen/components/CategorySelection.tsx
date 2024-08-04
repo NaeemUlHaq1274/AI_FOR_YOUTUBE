@@ -1,9 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { MyContainer, MyText } from '@components';
+import { MyText } from '@components';
 import { MY_COLORS, ICONS_PATHS } from '@constants';
 import { adjust } from '@utils';
-import BottomSheet from '@gorhom/bottom-sheet';
 import SettingModal from './SettingModal';
 
 interface CategorySelectionProps {
@@ -21,14 +20,9 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
     handleSubcategoryPress,
     handleIconPress,
 }) => {
-    const bottomSheetRef = useRef<BottomSheet>(null);
-    const [settingModalVisible, setSettingModalVisible] = useState(false);
+    const [settingModalVisible, setSettingModalVisible] = React.useState(false);
 
-    const openBottomSheet = () => {
-        bottomSheetRef.current?.expand();
-    };
-
-    const CategoryItem = ({ text, onPress, disabled = false }: { text: string; onPress: () => void; disabled?: boolean }) => (
+    const CategoryItem = useCallback(({ text, onPress, disabled = false }: { text: string; onPress: () => void; disabled?: boolean }) => (
         <TouchableOpacity
             style={[styles.category, disabled && styles.disabledCategory]}
             onPress={onPress}
@@ -37,13 +31,20 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
             <MyText>{text}</MyText>
             <Image source={ICONS_PATHS.MENU} />
         </TouchableOpacity>
-    );
+    ), []);
+
+    const categoryItems = useMemo(() => (
+        <>
+            <CategoryItem text={selectedCategory || 'Select Category'} onPress={handleCategoryPress} />
+            <CategoryItem text={selectedSubcategory || 'Select Subcategory'} onPress={handleSubcategoryPress} disabled={!selectedCategory} />
+        </>
+    ), [CategoryItem, selectedCategory, selectedSubcategory, handleCategoryPress, handleSubcategoryPress]);
 
     return (
-        <View style={{ gap: adjust(6) }}>
+        <View style={styles.container}>
             <View style={styles.row}>
-                <View style={{ flexDirection: 'row', gap: adjust(6) }}>
-                    <MyText>{'Generate by Category'}</MyText>
+                <View style={styles.leftContent}>
+                    <MyText>Generate by Category</MyText>
                     <TouchableOpacity onPress={handleIconPress}>
                         <Image source={ICONS_PATHS.NEXT} />
                     </TouchableOpacity>
@@ -51,35 +52,29 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
                 <TouchableOpacity onPress={() => setSettingModalVisible(true)}>
                     <Image source={ICONS_PATHS.SETTING_ICON} />
                 </TouchableOpacity>
-                <SettingModal visible={settingModalVisible} onClose={() => setSettingModalVisible(false)} />
             </View>
 
-            <CategoryItem text={selectedCategory || 'Select Category'} onPress={handleCategoryPress} />
-            <CategoryItem text={selectedSubcategory || 'Select Subcategory'} onPress={handleSubcategoryPress} disabled={!selectedCategory} />
+            {categoryItems}
 
-            <BottomSheet
-                ref={bottomSheetRef}
-                index={-1}
-                snapPoints={[300, '50%', '100%']}
-                onChange={(index) => {
-                    if (index === -1) { }
-                }}
-            >
-                <MyContainer>
-                    <CategoryItem text={selectedCategory || 'Select Category'} onPress={handleCategoryPress} />
-                    <CategoryItem text={selectedSubcategory || 'Select Subcategory'} onPress={handleSubcategoryPress} disabled={!selectedCategory} />
-                </MyContainer>
-            </BottomSheet>
+            <SettingModal visible={settingModalVisible} onClose={() => setSettingModalVisible(false)} />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        gap: adjust(6),
+    },
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingEnd: 6
+        paddingEnd: 6,
+    },
+    leftContent: {
+        flexDirection: 'row',
+        gap: adjust(6),
+        alignItems: 'center',
     },
     category: {
         flexDirection: 'row',
@@ -92,9 +87,6 @@ const styles = StyleSheet.create({
     disabledCategory: {
         opacity: 0.5,
     },
-    bottomSheetContent: {
-        padding: adjust(16),
-    },
 });
 
-export default CategorySelection;
+export default React.memo(CategorySelection);

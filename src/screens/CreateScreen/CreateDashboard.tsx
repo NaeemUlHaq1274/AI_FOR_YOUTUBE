@@ -11,11 +11,10 @@ import { adjust } from '@utils';
 import { LoadingScreen, MyButton, MyHeader, MyScrollableContainer, MyText } from '@components';
 import RenderOption from './components/RenderOption';
 import GenerationMethodModal from './components/GenerationMethodModal';
-import CategoryModal from './components/CategoryModal';
-import SubcategoryModal from './components/SubcategoryModal';
 import ThemeInput from './components/ThemeInput';
 import CategorySelection from './components/CategorySelection';
 import { useAuth } from '@context';
+import BottomSheet from './components/BottomSheet';
 
 const CreateDashboard: React.FC = () => {
   const [theme, setTheme] = useState<string>('');
@@ -184,21 +183,24 @@ const CreateDashboard: React.FC = () => {
         setSelectedOption={setSelectedOption}
       />
 
-      <CategoryModal
+      <BottomSheet
         visible={categoryModalVisible}
         setVisible={setCategoryModalVisible}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        setSelectedSubcategory={setSelectedSubcategory}
+        selectedItem={selectedCategory}
+        setSelectedItem={setSelectedCategory}
+        type="category"
       />
 
-      <SubcategoryModal
+      <BottomSheet
         visible={subcategoryModalVisible}
         setVisible={setSubcategoryModalVisible}
+        selectedItem={selectedSubcategory}
+        setSelectedItem={setSelectedSubcategory}
+        type="subcategory"
         selectedCategory={selectedCategory}
-        selectedSubcategory={selectedSubcategory}
-        setSelectedSubcategory={setSelectedSubcategory}
       />
+
+
     </MyScrollableContainer>
   );
 };
@@ -226,13 +228,13 @@ const styles = StyleSheet.create({
     borderColor: MY_COLORS.PRIMARY,
     borderWidth: 1,
     borderRadius: 8,
-    paddingVertical: adjust(8),
+    paddingVertical: adjust(12),
   },
   removeItemsButton: {
     borderColor: MY_COLORS.PRIMARY,
     borderWidth: 1,
     borderRadius: 8,
-    paddingVertical: adjust(8),
+    paddingVertical: adjust(12),
   },
   disabledButton: {
     borderColor: MY_COLORS.DARK_GRAY,
@@ -240,13 +242,13 @@ const styles = StyleSheet.create({
   generateButton: {
     backgroundColor: MY_COLORS.PRIMARY,
     borderRadius: 8,
-    paddingVertical: adjust(8),
+    paddingVertical: adjust(12),
   },
   moreOptionsContainer: {
-    gap: adjust(6),
+    gap: adjust(8),
   },
   removeItemsContainer: {
-    gap: adjust(6),
+    gap: adjust(8),
   },
 });
 
