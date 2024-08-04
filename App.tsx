@@ -1,4 +1,4 @@
-import { ErrorBoundaryFallbackUI, MyText } from '@components';
+import { ErrorBoundaryFallbackUI, MyButton, MyText } from '@components';
 import { AuthProvider, SubscriptionProvider } from '@context';
 import { usePushNotification } from '@hooks';
 import { useEffect } from 'react';
@@ -9,7 +9,7 @@ import crashlytics from '@react-native-firebase/crashlytics'
 import { AuthNavigator, BottomTabNavigation } from '@navigation';
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { MY_COLORS } from '@constants';
+import { ICONS_PATHS, MY_COLORS } from '@constants';
 
 
 const App = () => {

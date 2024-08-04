@@ -7,11 +7,12 @@ interface MyScrollableContainerProps {
   children: ReactNode;
   style?: ViewStyle;
   contentContainerStyle?: ViewStyle;
+  ref?:any;
 }
 
-const MyScrollableContainer: React.FC<MyScrollableContainerProps> = ({ children, style, contentContainerStyle }) => {
+const MyScrollableContainer: React.FC<MyScrollableContainerProps> = ({ children, style, contentContainerStyle, ref }) => {
   return (
-    <ScrollView style={[styles.container, style]} contentContainerStyle={contentContainerStyle}>
+    <ScrollView ref={ref} style={ style} contentContainerStyle={[styles.container,contentContainerStyle]} showsVerticalScrollIndicator={false}>
       {children}
     </ScrollView>
   );

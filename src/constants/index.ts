@@ -44,10 +44,10 @@ export const SUBCATEGORIES: { [key: string]: string[] } = {
 };
 
 export const ADDITIONAL_OPTIONS = [
-    { title: 'Language', icon: ICONS_PATHS.LANGUAGE },
-    { title: 'Region', icon: ICONS_PATHS.REGION },
-    { title: 'Channel Category', icon: ICONS_PATHS.CHANNEL_CATEGORY },
-    { title: 'Audience Target', icon: ICONS_PATHS.AUDIENCE_TARGET },
-    { title: 'Your Channel Name', icon: ICONS_PATHS.YOUR_CHANNEL },
-    { title: 'Content details', icon: ICONS_PATHS.CONTENT },
+    { title: 'Language', iconPath: ICONS_PATHS.LANGUAGE },
+    { title: 'Region', iconPath: ICONS_PATHS.REGION },
+    { title: 'Channel Category', iconPath: ICONS_PATHS.CHANNEL_CATEGORY },
+    { title: 'Audience Target', iconPath: ICONS_PATHS.AUDIENCE_TARGET },
+    { title: 'Your Channel Name', iconPath: ICONS_PATHS.YOUR_CHANNEL },
+    { title: 'Content details', iconPath: ICONS_PATHS.CONTENT },
 ];

@@ -12,8 +12,8 @@ interface RenderOptionProps {
 
 const RenderOption: React.FC<RenderOptionProps> = ({ title, icon, onPress }) => (
     <TouchableOpacity onPress={onPress} style={styles.optionButton}>
-        <MyText cp color={MY_COLORS.WHITE}>{title}</MyText>
-        <Image source={icon} style={styles.icon} />
+        <MyText p color={MY_COLORS.WHITE}>{title}</MyText>
+        <Image source={icon} resizeMode='contain' />
     </TouchableOpacity>
 );
 
@@ -23,13 +23,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: MY_COLORS.BLACK,
-        padding: adjust(8),
+        padding: adjust(11),
         borderRadius: 8,
-    },
-    icon: {
-        width: adjust(20),
-        height: adjust(20),
-        marginRight: adjust(10),
     },
 });
 
