@@ -60,7 +60,7 @@ const CreateDashboard: React.FC = () => {
 
   const toggleShowRemoveItems = useCallback(() => {
     setShowRemoveItems((prev) => !prev);
-    setRemoveItemsModalVisible((prev) => !prev); // Show bottom sheet when toggling remove items
+    setRemoveItemsModalVisible((prev) => !prev);
   }, []);
 
   const availableItems = useMemo(() =>
@@ -80,7 +80,7 @@ const CreateDashboard: React.FC = () => {
   }
 
   return (
-    <MyScrollableContainer contentContainerStyle={{ gap: 20 }} >
+    <MyScrollableContainer contentContainerStyle={{ gap: 12 }} >
       <View>
         <MyHeader
           color={MY_COLORS.BLACK}

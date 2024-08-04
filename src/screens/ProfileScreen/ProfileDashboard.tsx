@@ -83,7 +83,7 @@ const ProfileDashboard: React.FC = () => {
   );
 
   const renderSection = (title: string, items: SectionItemProps[]) => (
-    <View style={styles.section}>
+    <View>
       {title && (
         <MyText style={styles.sectionTitle} p bold>
           {title}
@@ -168,37 +168,34 @@ const styles = StyleSheet.create({
   userEmail: {
     color: MY_COLORS.DARK_GRAY,
   },
-  section: {
-    marginBottom: adjust(16),
-  },
   sectionTitle: {
-    marginBottom: adjust(8),
+    marginBottom: adjust(6),
     color: MY_COLORS.WHITE,
   },
   sectionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: adjust(8),
+    paddingVertical: adjust(6),
   },
   sectionItemContent: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   sectionItemText: {
-    marginLeft: adjust(10),
+    marginLeft: adjust(6),
   },
   divider: {
     height: 1,
     backgroundColor: MY_COLORS.DARK_GRAY,
-    marginVertical: adjust(12),
+    marginVertical: adjust(6),
   },
   loadingText: {
     color: MY_COLORS.WHITE,
     textAlign: 'center',
   },
   logo: {
-    alignSelf: 'center',
     marginBottom: adjust(16),
+    alignItems: 'flex-start'
   },
 });
 
