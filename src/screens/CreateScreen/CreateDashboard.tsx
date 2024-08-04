@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { StyleSheet, View, ScrollView, ImageSourcePropType } from 'react-native';
+import { StyleSheet, View, ImageSourcePropType } from 'react-native';
 import {
   MY_COLORS,
   IMAGES_PATHS,
@@ -23,6 +23,7 @@ const CreateDashboard: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<'theme' | 'category' | 'script' | 'v-theme'>('theme');
   const [categoryModalVisible, setCategoryModalVisible] = useState<boolean>(false);
   const [subcategoryModalVisible, setSubcategoryModalVisible] = useState<boolean>(false);
+  const [removeItemsModalVisible, setRemoveItemsModalVisible] = useState<boolean>(false); // New state variable
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
   const [showMoreOptions, setShowMoreOptions] = useState<boolean>(false);
@@ -59,6 +60,7 @@ const CreateDashboard: React.FC = () => {
 
   const toggleShowRemoveItems = useCallback(() => {
     setShowRemoveItems((prev) => !prev);
+    setRemoveItemsModalVisible((prev) => !prev); // Show bottom sheet when toggling remove items
   }, []);
 
   const availableItems = useMemo(() =>
@@ -153,19 +155,6 @@ const CreateDashboard: React.FC = () => {
           disabled={isRemoveButtonDisabled}
         />
 
-        {showRemoveItems && !isRemoveButtonDisabled && (
-          <View style={styles.removeItemsContainer}>
-            {selectedItems.map(item => (
-              <RenderOption
-                key={item}
-                title={item}
-                icon={ICONS_PATHS.MINUS}
-                onPress={() => handleItemClick(item)}
-              />
-            ))}
-          </View>
-        )}
-
         <MyButton
           title="Generate now"
           onPress={handleGenerate}
@@ -200,6 +189,15 @@ const CreateDashboard: React.FC = () => {
         selectedCategory={selectedCategory}
       />
 
+      <BottomSheet
+        visible={removeItemsModalVisible}
+        setVisible={setRemoveItemsModalVisible}
+        selectedItem={null}
+        setSelectedItem={() => { }}
+        type="remove"
+        items={selectedItems}
+        handleItemClick={handleItemClick}
+      />
 
     </MyScrollableContainer>
   );
