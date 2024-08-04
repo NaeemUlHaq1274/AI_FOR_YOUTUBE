@@ -14,7 +14,6 @@ interface MyButtonProps {
   textColor?: string;
   justifyContent?: 'center' | 'space-between';
   disabled?: boolean;
-  iconSize?: number;
 }
 
 const MyButton: React.FC<MyButtonProps> = ({
@@ -28,7 +27,6 @@ const MyButton: React.FC<MyButtonProps> = ({
   textColor = MY_COLORS.WHITE,
   justifyContent = 'center',
   disabled = false,
-  iconSize = 16,
 }) => {
   const buttonStyle = useMemo(() => [
     styles.button,
@@ -48,13 +46,8 @@ const MyButton: React.FC<MyButtonProps> = ({
     { color: disabled ? MY_COLORS.DARK_GRAY : textColor },
   ], [textColor, disabled]);
 
-  const iconStyle = useMemo(() => [
-    styles.icon,
-    { width: adjust(iconSize), height: adjust(iconSize) },
-  ], [iconSize]);
-
   const renderIcon = () => (
-    iconPath && <Image source={iconPath} style={iconStyle} />
+    iconPath && <Image source={iconPath} />
   );
 
   return (
@@ -75,6 +68,7 @@ const MyButton: React.FC<MyButtonProps> = ({
 const styles = StyleSheet.create({
   button: {
     backgroundColor: MY_COLORS.PRIMARY,
+    gap: adjust(8),
     padding: adjust(8),
     borderRadius: 8,
   },

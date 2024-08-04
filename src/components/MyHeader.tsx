@@ -14,7 +14,7 @@ const MyHeader: React.FC<MyHeaderProps> = ({ color, title, iconPath, onPressIcon
   return (
     <View style={[styles.header, {}]}>
       <TouchableOpacity onPress={onPressIcon}>
-        <Image source={ICONS_PATHS.LOGO} style={styles.icon} />
+        <Image source={ICONS_PATHS.LOGO} />
       </TouchableOpacity>
       {rightIcon && <Image source={rightIcon} style={styles.rightIcon} />}
     </View>
@@ -28,10 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: adjust(6),
   },
-  icon: {
-    width: adjust(130),
-    height: adjust(40),
-  },
+
   title: {
     color: 'white',
     fontSize: 20,

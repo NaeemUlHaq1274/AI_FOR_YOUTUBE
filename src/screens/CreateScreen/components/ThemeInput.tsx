@@ -19,11 +19,11 @@ const ThemeInput: React.FC<ThemeInputProps> = ({ theme, setTheme, handleIconPres
                 <View style={styles.row}>
                     <MyText p style={styles.labelText}>Generate by Theme</MyText>
                     <TouchableOpacity onPress={handleIconPress}>
-                        <Image source={ICONS_PATHS.NEXT} style={styles.nextIcon} />
+                        <Image source={ICONS_PATHS.NEXT} />
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => setSettingModalVisible(true)}>
-                    <Image source={ICONS_PATHS.SETTING_ICON} style={styles.nextIcon} />
+                    <Image source={ICONS_PATHS.SETTING_ICON} />
                 </TouchableOpacity>
                 <SettingModal visible={settingModalVisible} onClose={() => setSettingModalVisible(false)} />
             </View>
@@ -45,12 +45,8 @@ const styles = StyleSheet.create({
     labelText: {
         color: MY_COLORS.WHITE,
     },
-    nextIcon: {
-        width: 20,
-        height: 20,
-    },
     themeInput: {
-        backgroundColor: MY_COLORS.DARK_GRAY,
+        backgroundColor: MY_COLORS.BLACK,
         color: MY_COLORS.WHITE,
         borderRadius: 8,
     },

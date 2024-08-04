@@ -13,7 +13,7 @@ interface RenderOptionProps {
 const RenderOption: React.FC<RenderOptionProps> = ({ title, icon, onPress }) => (
     <TouchableOpacity onPress={onPress} style={styles.optionButton}>
         <MyText cp color={MY_COLORS.WHITE}>{title}</MyText>
-        <Image source={icon} style={styles.icon} />
+        <Image source={icon} />
     </TouchableOpacity>
 );
 
@@ -26,11 +26,7 @@ const styles = StyleSheet.create({
         padding: adjust(8),
         borderRadius: 8,
     },
-    icon: {
-        width: adjust(20),
-        height: adjust(20),
-        marginRight: adjust(10),
-    },
+
 });
 
 export default RenderOption;

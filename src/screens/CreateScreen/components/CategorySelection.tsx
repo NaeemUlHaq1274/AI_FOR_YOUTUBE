@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
-import { MyText } from '@components';
+import { MyContainer, MyText } from '@components';
 import { MY_COLORS, ICONS_PATHS } from '@constants';
 import { adjust } from '@utils';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -28,32 +28,34 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
         bottomSheetRef.current?.expand();
     };
 
+    const CategoryItem = ({ text, onPress, disabled = false }: { text: string; onPress: () => void; disabled?: boolean }) => (
+        <TouchableOpacity
+            style={[styles.category, disabled && styles.disabledCategory]}
+            onPress={onPress}
+            disabled={disabled}
+        >
+            <MyText>{text}</MyText>
+            <Image source={ICONS_PATHS.MENU} />
+        </TouchableOpacity>
+    );
+
     return (
         <View style={{ gap: adjust(6) }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={styles.row}>
+            <View style={styles.row}>
+                <View style={{ flexDirection: 'row', gap: adjust(6) }}>
                     <MyText>{'Generate by Category'}</MyText>
                     <TouchableOpacity onPress={handleIconPress}>
-                        <Image source={ICONS_PATHS.NEXT} style={styles.nextIcon} />
+                        <Image source={ICONS_PATHS.NEXT} />
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => setSettingModalVisible(true)}>
-                    <Image source={ICONS_PATHS.SETTING_ICON} style={styles.nextIcon} />
+                    <Image source={ICONS_PATHS.SETTING_ICON} />
                 </TouchableOpacity>
                 <SettingModal visible={settingModalVisible} onClose={() => setSettingModalVisible(false)} />
             </View>
-            <TouchableOpacity style={styles.category} onPress={handleCategoryPress}>
-                <MyText>{selectedCategory || 'Select Category'}</MyText>
-                <Image source={ICONS_PATHS.MENU} style={styles.nextIcon} />
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={[styles.category, !selectedCategory && styles.disabledCategory]}
-                onPress={handleSubcategoryPress}
-                disabled={!selectedCategory}
-            >
-                <MyText>{selectedSubcategory || 'Select Subcategory'}</MyText>
-                <Image source={ICONS_PATHS.MENU} style={styles.nextIcon} />
-            </TouchableOpacity>
+
+            <CategoryItem text={selectedCategory || 'Select Category'} onPress={handleCategoryPress} />
+            <CategoryItem text={selectedSubcategory || 'Select Subcategory'} onPress={handleSubcategoryPress} disabled={!selectedCategory} />
 
             <BottomSheet
                 ref={bottomSheetRef}
@@ -63,20 +65,10 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
                     if (index === -1) { }
                 }}
             >
-                <View style={styles.bottomSheetContent}>
-                    <TouchableOpacity style={styles.category} onPress={handleCategoryPress}>
-                        <MyText>{selectedCategory || 'Select Category'}</MyText>
-                        <Image source={ICONS_PATHS.MENU} style={styles.nextIcon} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.category, !selectedCategory && styles.disabledCategory]}
-                        onPress={handleSubcategoryPress}
-                        disabled={!selectedCategory}
-                    >
-                        <MyText>{selectedSubcategory || 'Select Subcategory'}</MyText>
-                        <Image source={ICONS_PATHS.MENU} style={styles.nextIcon} />
-                    </TouchableOpacity>
-                </View>
+                <MyContainer>
+                    <CategoryItem text={selectedCategory || 'Select Category'} onPress={handleCategoryPress} />
+                    <CategoryItem text={selectedSubcategory || 'Select Subcategory'} onPress={handleSubcategoryPress} disabled={!selectedCategory} />
+                </MyContainer>
             </BottomSheet>
         </View>
     );
@@ -85,20 +77,15 @@ const CategorySelection: React.FC<CategorySelectionProps> = ({
 const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
-        gap: adjust(8),
-    },
-    labelText: {
-        color: MY_COLORS.WHITE,
-    },
-    nextIcon: {
-        width: 24,
-        height: 24,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingEnd: 6
     },
     category: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: MY_COLORS.DARK_GRAY,
+        backgroundColor: MY_COLORS.BLACK,
         padding: adjust(8),
         borderRadius: 8,
     },

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
-import { View, StyleSheet, Image, ImageSourcePropType, TouchableOpacity, Alert, ScrollView } from 'react-native';
-import { ICONS_PATHS, IMAGES_PATHS, MY_COLORS } from '@constants';
-import { MyText } from '@components';
+import { View, StyleSheet, Image, ImageSourcePropType, TouchableOpacity, Alert } from 'react-native';
+import { ICONS_PATHS, MY_COLORS } from '@constants';
+import { MyContainer, MyScrollableContainer, MyText } from '@components';
 import { adjust } from '@utils';
 import { useAuth } from '@context';
 import auth from '@react-native-firebase/auth';
@@ -14,14 +14,14 @@ interface SectionItemProps {
   color?: string;
 }
 
-const SectionItem: React.FC<SectionItemProps> = ({ icon, title, onPress, color = MY_COLORS.WHITE }) => (
-  <TouchableOpacity onPress={onPress} style={styles.sectionItem}>
+const SectionItem: React.FC<SectionItemProps> = React.memo(({ icon, title, onPress, color = MY_COLORS.WHITE }) => (
+  <TouchableOpacity onPress={onPress} style={styles.sectionItem} accessibilityLabel={title}>
     <View style={styles.sectionItemContent}>
-      <Image source={icon} style={styles.sectionItemIcon} />
-      <MyText style={[styles.sectionItemText, { color }]}>{title}</MyText>
+      <Image source={icon} />
+      <MyText style={styles.sectionItemText}>{title}</MyText>
     </View>
   </TouchableOpacity>
-);
+));
 
 const ProfileDashboard: React.FC = () => {
   const { currentUser, logout, setResults } = useAuth();
@@ -75,7 +75,7 @@ const ProfileDashboard: React.FC = () => {
         <MyText style={styles.userName} p bold>
           {currentUser?.displayName || 'User Name'}
         </MyText>
-        <MyText style={styles.userEmail} p color={MY_COLORS.DARK_GRAY}>
+        <MyText style={styles.userEmail} p>
           {currentUser?.email || 'example@gmail.com'}
         </MyText>
       </View>
@@ -84,9 +84,11 @@ const ProfileDashboard: React.FC = () => {
 
   const renderSection = (title: string, items: SectionItemProps[]) => (
     <View style={styles.section}>
-      <MyText style={styles.sectionTitle} p bold>
-        {title}
-      </MyText>
+      {title && (
+        <MyText style={styles.sectionTitle} p bold>
+          {title}
+        </MyText>
+      )}
       {items.map((item, index) => (
         <SectionItem key={index} {...item} />
       ))}
@@ -95,14 +97,14 @@ const ProfileDashboard: React.FC = () => {
 
   if (!currentUser) {
     return (
-      <View style={styles.container}>
+      <MyContainer>
         <MyText style={styles.loadingText}>Loading...</MyText>
-      </View>
+      </MyContainer>
     );
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <MyScrollableContainer>
       {renderHeader()}
       <Image source={ICONS_PATHS.LOGO} style={styles.logo} />
 
@@ -132,80 +134,58 @@ const ProfileDashboard: React.FC = () => {
         { icon: ICONS_PATHS.DELETE_ICON, title: "Delete account", onPress: handleDeleteAccount, color: MY_COLORS.PRIMARY },
         { icon: ICONS_PATHS.SWITCH_OFF, title: "Log out", onPress: logout, color: MY_COLORS.PRIMARY },
       ])}
-    </ScrollView>
+    </MyScrollableContainer>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: MY_COLORS.BLACK,
-    paddingHorizontal: adjust(12),
-    paddingVertical: adjust(8),
-  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     height: 100,
-    gap: adjust(12),
+    marginBottom: adjust(12),
   },
   profileImage: {
     width: 50,
     height: 50,
     borderRadius: 25,
-    flexShrink: 0,
   },
   placeholderImage: {
     width: 50,
     height: 50,
     borderRadius: 25,
     backgroundColor: '#ccc',
-    flexShrink: 0,
   },
   headerTextContainer: {
+    marginLeft: adjust(12),
     flex: 1,
     justifyContent: 'center',
   },
   userName: {
     color: MY_COLORS.WHITE,
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
   },
   userEmail: {
     color: MY_COLORS.DARK_GRAY,
   },
-  logo: {
-    width: '50%',
-    height: 50,
-    resizeMode: 'contain',
-    marginBottom: 12,
-  },
   section: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    height: 'auto',
-    gap: adjust(16),
+    marginBottom: adjust(16),
   },
   sectionTitle: {
+    marginBottom: adjust(8),
     color: MY_COLORS.WHITE,
   },
   sectionItem: {
-    backgroundColor: 'transparent',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 'auto',
+    paddingVertical: adjust(8),
   },
   sectionItemContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
-  },
-  sectionItemIcon: {
-    width: 24,
-    height: 24,
-    marginRight: 10,
   },
   sectionItemText: {
-    color: MY_COLORS.WHITE,
+    marginLeft: adjust(10),
   },
   divider: {
     height: 1,
@@ -215,6 +195,10 @@ const styles = StyleSheet.create({
   loadingText: {
     color: MY_COLORS.WHITE,
     textAlign: 'center',
+  },
+  logo: {
+    alignSelf: 'center',
+    marginBottom: adjust(16),
   },
 });
 

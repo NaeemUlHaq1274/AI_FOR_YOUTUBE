@@ -79,7 +79,7 @@ const CreateDashboard: React.FC = () => {
   }
 
   return (
-    <MyScrollableContainer contentContainerStyle={{gap:20}} >
+    <MyScrollableContainer contentContainerStyle={{ gap: 20 }} >
       <View>
         <MyHeader
           color={MY_COLORS.BLACK}
@@ -226,13 +226,13 @@ const styles = StyleSheet.create({
     borderColor: MY_COLORS.PRIMARY,
     borderWidth: 1,
     borderRadius: 8,
-    paddingVertical: adjust(12),
+    paddingVertical: adjust(8),
   },
   removeItemsButton: {
     borderColor: MY_COLORS.PRIMARY,
     borderWidth: 1,
     borderRadius: 8,
-    paddingVertical: adjust(12),
+    paddingVertical: adjust(8),
   },
   disabledButton: {
     borderColor: MY_COLORS.DARK_GRAY,
@@ -240,13 +240,13 @@ const styles = StyleSheet.create({
   generateButton: {
     backgroundColor: MY_COLORS.PRIMARY,
     borderRadius: 8,
-    paddingVertical: adjust(12),
+    paddingVertical: adjust(8),
   },
   moreOptionsContainer: {
-    gap: adjust(8),
+    gap: adjust(6),
   },
   removeItemsContainer: {
-    gap: adjust(8),
+    gap: adjust(6),
   },
 });
 
