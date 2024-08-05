@@ -1,29 +1,19 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { StyleSheet, View, ImageSourcePropType } from 'react-native';
-import {
-  MY_COLORS,
-  IMAGES_PATHS,
-  ICONS_PATHS,
-  DASHBOARD_ITEMS,
-  ADDITIONAL_OPTIONS,
-} from '@constants';
+import React, { useState } from 'react';
+import { StyleSheet, View, ImageSourcePropType, TouchableOpacity, Image } from 'react-native';
+import { MY_COLORS, IMAGES_PATHS, ICONS_PATHS, DASHBOARD_ITEMS, ADDITIONAL_OPTIONS, } from '@constants';
 import { adjust } from '@utils';
-import { LoadingScreen, MyButton, MyHeader, MyScrollableContainer, MyText } from '@components';
+import { LoadingScreen, MyButton, MyHeader, MyScrollableContainer, MyText, MyTextInput } from '@components';
 import RenderOption from './components/RenderOption';
-import GenerationMethodModal from './components/GenerationMethodModal';
-import ThemeInput from './components/ThemeInput';
-import CategorySelection from './components/CategorySelection';
 import { useAuth } from '@context';
 import BottomSheet from './components/BottomSheet';
 
 const CreateDashboard: React.FC = () => {
   const [theme, setTheme] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<'theme' | 'category' | 'script' | 'v-theme'>('theme');
   const [categoryModalVisible, setCategoryModalVisible] = useState<boolean>(false);
   const [subcategoryModalVisible, setSubcategoryModalVisible] = useState<boolean>(false);
-  const [removeItemsModalVisible, setRemoveItemsModalVisible] = useState<boolean>(false); // New state variable
+  const [removeItemsModalVisible, setRemoveItemsModalVisible] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
   const [showMoreOptions, setShowMoreOptions] = useState<boolean>(false);
@@ -32,7 +22,7 @@ const CreateDashboard: React.FC = () => {
 
   const { currentUser } = useAuth();
 
-  const handleGenerate = useCallback(() => {
+  const handleGenerate = () => {
     if (selectedOption === 'theme' && theme.trim() === '') {
       console.log('Please enter a theme');
       return;
@@ -46,34 +36,26 @@ const CreateDashboard: React.FC = () => {
       setIsLoading(false);
       console.log(`Generated content for ${selectedOption}:`, selectedOption === 'theme' ? theme : `${selectedCategory} - ${selectedSubcategory}`);
     }, 2000);
-  }, [selectedOption, theme, selectedCategory, selectedSubcategory]);
+  };
 
-  const toggleMoreOptions = useCallback(() => {
+  const toggleMoreOptions = () => {
     setShowMoreOptions((prev) => !prev);
-  }, []);
+  };
 
-  const handleItemClick = useCallback((item: string) => {
+  const handleItemClick = (item: string) => {
     setSelectedItems((prevItems) =>
       prevItems.includes(item) ? prevItems.filter((i) => i !== item) : [...prevItems, item]
     );
-  }, []);
+  };
 
-  const toggleShowRemoveItems = useCallback(() => {
+  const toggleShowRemoveItems = () => {
     setShowRemoveItems((prev) => !prev);
     setRemoveItemsModalVisible((prev) => !prev);
-  }, []);
+  };
 
-  const availableItems = useMemo(() =>
-    DASHBOARD_ITEMS.filter(item => !selectedItems.includes(item)),
-    [selectedItems]);
-
-  const isRemoveButtonDisabled = useMemo(() =>
-    selectedItems.length === 0,
-    [selectedItems]);
-
-  const allItemsSelected = useMemo(() =>
-    availableItems.length === 0,
-    [availableItems]);
+  const availableItems = DASHBOARD_ITEMS.filter(item => !selectedItems.includes(item));
+  const isRemoveButtonDisabled = selectedItems.length === 0;
+  const allItemsSelected = availableItems.length === 0;
 
   if (isLoading) {
     return <LoadingScreen description="Generating your video content..." />;
@@ -81,57 +63,58 @@ const CreateDashboard: React.FC = () => {
 
   return (
     <MyScrollableContainer contentContainerStyle={{ gap: 12 }} >
-      <View>
-        <MyHeader
-          color={MY_COLORS.BLACK}
-          title="Creator BOOST"
-          iconPath={IMAGES_PATHS.BLACK_FEEDBACK as ImageSourcePropType}
-          onPressIcon={() => {/* Handle menu press */ }}
-          rightIcon={currentUser?.photoURL ? { uri: currentUser.photoURL } : ICONS_PATHS.USER_PROFILE}
-        />
+      <MyHeader
+        color={MY_COLORS.BLACK}
+        title="Creator BOOST"
+        iconPath={IMAGES_PATHS.BLACK_FEEDBACK as ImageSourcePropType}
+        onPressIcon={() => {/* Handle menu press */ }}
+        rightIcon={currentUser?.photoURL ? { uri: currentUser.photoURL } : ICONS_PATHS.USER_PROFILE}
+      />
+
+      <View style={{ gap: adjust(12) }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+          <View style={{ flexDirection: "row", gap: 6, alignItems: "center" }}>
+            <MyText>Generate by {selectedOption !== 'theme' ? "Category" : "Theme"}</MyText>
+            <TouchableOpacity onPress={() => { }}>
+              <Image source={ICONS_PATHS.NEXT} />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={{ alignSelf: "flex-end", paddingHorizontal: adjust(12) }} onPress={() => { }}>
+            <Image source={ICONS_PATHS.SETTING_ICON} />
+          </TouchableOpacity>
+        </View>
+
+        {selectedOption !== 'theme' ? (
+          <View style={{ gap: adjust(8) }}>
+            <RenderOption title="Select Category" icon={ICONS_PATHS.MENU} />
+            <RenderOption title="Select Sub-Category" icon={ICONS_PATHS.MENU} />
+          </View>
+        ) : (
+          <MyTextInput
+            placeholder="Enter your video theme here..."
+            value={theme}
+            onChangeText={setTheme}
+          />
+        )}
       </View>
 
-      {selectedOption === 'theme' ? (
-        <ThemeInput theme={theme} setTheme={setTheme} handleIconPress={() => setModalVisible(true)} />
-      ) : (
-        <CategorySelection
-          selectedCategory={selectedCategory}
-          selectedSubcategory={selectedSubcategory}
-          handleCategoryPress={() => setCategoryModalVisible(true)}
-          handleSubcategoryPress={() => setSubcategoryModalVisible(true)}
-          handleIconPress={() => setModalVisible(true)}
-        />
-      )}
-
-      {!allItemsSelected && (
-        <View style={styles.optionsContainer}>
-          <View style={styles.optionsHeader}>
-            <MyText p style={styles.labelText}>Choose Options</MyText>
+      {
+        !allItemsSelected && (
+          <View style={styles.optionsContainer}>
+            <View style={styles.optionsHeader}>
+              <MyText p style={styles.labelText}>Choose Options</MyText>
+            </View>
+            <View style={styles.optionsWrapper}>
+              {availableItems.map(option => (
+                <RenderOption key={option} title={option} icon={ICONS_PATHS.PLUS} onPress={() => handleItemClick(option)} />
+              ))}
+            </View>
           </View>
-          <View style={styles.optionsWrapper}>
-            {availableItems.map(option => (
-              <RenderOption
-                key={option}
-                title={option}
-                icon={ICONS_PATHS.PLUS}
-                onPress={() => handleItemClick(option)}
-              />
-            ))}
-          </View>
-        </View>
-      )}
+        )
+      }
 
       <View style={styles.buttonContainer}>
-        <MyButton
-          title="More options"
-          btnType="secondary"
-          onPress={toggleMoreOptions}
-          style={styles.moreOptionsButton}
-          textColor={MY_COLORS.PRIMARY}
-          btnWidth="100%"
-          iconPath={showMoreOptions ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON}
-          iconPosition="right"
-        />
+        <MyButton title="More options" btnType="secondary" onPress={toggleMoreOptions} iconPath={showMoreOptions ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
         {showMoreOptions && (
           <View style={styles.moreOptionsContainer}>
             {ADDITIONAL_OPTIONS.map(option => (
@@ -139,38 +122,9 @@ const CreateDashboard: React.FC = () => {
             ))}
           </View>
         )}
-
-        <MyButton
-          title="Remove items"
-          btnType="secondary"
-          onPress={toggleShowRemoveItems}
-          style={[
-            styles.removeItemsButton,
-            isRemoveButtonDisabled && styles.disabledButton
-          ]}
-          textColor={isRemoveButtonDisabled ? MY_COLORS.DARK_GRAY : MY_COLORS.PRIMARY}
-          btnWidth="100%"
-          iconPath={showRemoveItems ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON}
-          iconPosition="right"
-          disabled={isRemoveButtonDisabled}
-        />
-
-        <MyButton
-          title="Generate now"
-          onPress={handleGenerate}
-          iconPath={ICONS_PATHS.GENERATE_ICON as ImageSourcePropType}
-          style={styles.generateButton}
-          textColor={MY_COLORS.WHITE}
-          btnWidth="100%"
-        />
+        <MyButton title="Remove items" btnType="secondary" onPress={toggleShowRemoveItems} iconPath={showRemoveItems ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
+        <MyButton title="Generate now" onPress={handleGenerate} iconPath={ICONS_PATHS.GENERATE_ICON as ImageSourcePropType} />
       </View>
-
-      <GenerationMethodModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        selectedOption={selectedOption}
-        setSelectedOption={setSelectedOption}
-      />
 
       <BottomSheet
         visible={categoryModalVisible}
@@ -199,7 +153,7 @@ const CreateDashboard: React.FC = () => {
         handleItemClick={handleItemClick}
       />
 
-    </MyScrollableContainer>
+    </MyScrollableContainer >
   );
 };
 
@@ -226,21 +180,15 @@ const styles = StyleSheet.create({
     borderColor: MY_COLORS.PRIMARY,
     borderWidth: 1,
     borderRadius: 8,
-    paddingVertical: adjust(12),
   },
   removeItemsButton: {
     borderColor: MY_COLORS.PRIMARY,
     borderWidth: 1,
     borderRadius: 8,
-    paddingVertical: adjust(12),
-  },
-  disabledButton: {
-    borderColor: MY_COLORS.DARK_GRAY,
   },
   generateButton: {
     backgroundColor: MY_COLORS.PRIMARY,
     borderRadius: 8,
-    paddingVertical: adjust(12),
   },
   moreOptionsContainer: {
     gap: adjust(8),

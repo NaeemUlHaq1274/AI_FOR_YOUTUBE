@@ -43,8 +43,6 @@ const SettingModal: React.FC<SettingModalProps> = ({ visible, onClose }) => {
                                     button.onPress();
                                 }}
                                 btnType={selectedDefaultButton === button.title ? 'primary' : 'secondary'}
-                                btnWidth={'48%'}
-                                style={styles.button}
                             />
                         ))}
                     </View>
@@ -59,12 +57,10 @@ const SettingModal: React.FC<SettingModalProps> = ({ visible, onClose }) => {
                                     button.onPress();
                                 }}
                                 btnType={selectedGenerateButton === button.title ? 'primary' : 'secondary'}
-                                btnWidth={'48%'}
-                                style={styles.button}
                             />
                         ))}
                     </View>
-                    <MyButton title="Done" onPress={onClose} btnType="secondary" btnWidth={'100%'} />
+                    <MyButton title="Done" onPress={onClose} btnType="secondary" />
                 </View>
             </View>
         </Modal>
@@ -96,9 +92,6 @@ const styles = StyleSheet.create({
     buttonRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 10,
-    },
-    button: {
         marginBottom: 10,
     },
 });

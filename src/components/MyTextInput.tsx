@@ -5,7 +5,6 @@ import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle, View } fro
 import MyText from './MyText';
 
 interface AppProps extends TextInputProps {
-  label?: string;
   value?: string;
   placeholder: string;
   style?: StyleProp<TextStyle>;
@@ -13,7 +12,6 @@ interface AppProps extends TextInputProps {
 }
 
 const App: React.FC<AppProps> = ({
-  label,
   value,
   placeholder,
   style,
@@ -22,33 +20,31 @@ const App: React.FC<AppProps> = ({
 
   const styles = myStyles();
   return (
-    <View style={styles.container}>
-      {label && <MyText p color={MY_COLORS.TXT_DIM} style={styles.txt}>{label}</MyText>}
-      <TextInput
-        style={[styles.input, style]}
-        placeholder={placeholder}
-        placeholderTextColor={MY_COLORS.TXT_DIM}
-        value={value}
-        onChangeText={onChangeText}
-        multiline // Enable multiline to allow for dynamic height adjustment
-      />
-    </View>
+    <TextInput
+      style={[styles.input, style]}
+      placeholder={placeholder}
+      placeholderTextColor={MY_COLORS.TXT_DIM}
+      value={value}
+      onChangeText={onChangeText}
+      multiline
+    />
   );
 };
 
 const myStyles = () =>
   StyleSheet.create({
-    container: {
-
-    },
     input: {
+      backgroundColor: MY_COLORS.BLACK,
       paddingHorizontal: adjust(10),
-      borderWidth: 1,
-      borderColor: MY_COLORS.TXT_DIM,
-      borderRadius: 12,
-      color: 'black',
+      borderRadius: 8,
+      color: MY_COLORS.WHITE,
+      height: hp(16),
+      textAlignVertical: 'top', // Align text vertically at the top
+      textAlign: 'left', // Align text horizontally at the left
+      padding: adjust(8), // Remove any default padding
+      margin: 0, // Remove any default margin
+      fontSize: adjust(14)
     },
-    txt: { marginTop: 0 },
   });
 
 export default App;
