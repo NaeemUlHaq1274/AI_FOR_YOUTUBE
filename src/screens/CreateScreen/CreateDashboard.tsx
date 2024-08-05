@@ -4,7 +4,6 @@ import {
   MY_COLORS,
   IMAGES_PATHS,
   ICONS_PATHS,
-  DASHBOARD_ITEMS,
   ADDITIONAL_OPTIONS,
 } from '@constants';
 import { adjust } from '@utils';
@@ -18,19 +17,16 @@ import { useAuth } from '@context';
 
 const CreateDashboard: React.FC = () => {
 
-  const DASHBOARD_ITEMS = [
+  const [unSelectedOptions,setUnSelectedOptions] = useState([
     { title: 'Include Title', iconPath: ICONS_PATHS.PLUS },
     { title: 'Include Description', iconPath: ICONS_PATHS.PLUS },
     { title: 'Include Tags', iconPath: ICONS_PATHS.PLUS },
     { title: 'Include Script', iconPath: ICONS_PATHS.PLUS },
     { title: 'Include Audio', iconPath: ICONS_PATHS.PLUS },
     { title: 'Include Thumbnail', iconPath: ICONS_PATHS.PLUS },
-  ];
-
-
-
-
-
+  ])
+  
+  const [selectedOptions,setSelectedOptions] = useState<any>([])
 
 
 
@@ -80,12 +76,53 @@ const CreateDashboard: React.FC = () => {
   // }, []);
 
   // const availableItems = useMemo(() =>
-  //   DASHBOARD_ITEMS.filter(item => !selectedItems.includes(item)),
+  //   unSelectedOption.filter(item => !selectedItems.includes(item)),
   //   [selectedItems]);
 
   // const isRemoveButtonDisabled = useMemo(() =>
   //   selectedItems.length === 0,
   //   [selectedItems]);
+
+
+  const handleChooseOption = (title:string) => {
+    // Find the selected option from unSelectedOptions
+    const selectedOption = unSelectedOptions.find(option => option.title === title);
+
+    // If the selected option is found
+    if (selectedOption) {
+      // Update the iconPath of the selected option
+      const updatedOption = { ...selectedOption, iconPath: ICONS_PATHS.MINUS };
+
+      // Filter out the selected option from unSelectedOptions
+      const newUnSelectedOptions = unSelectedOptions.filter(option => option.title !== title);
+
+      // Add the updated option to selectedOptions
+      setSelectedOptions([...selectedOptions, updatedOption]);
+
+      // Update the unSelectedOptions state
+      setUnSelectedOptions(newUnSelectedOptions);
+    }
+  };
+
+  const handleDeselectOption = (title:string) => {
+    // Find the selected option from selectedOptions
+    const selectedOption = selectedOptions.find((option:any) => option.title === title);
+
+    // If the selected option is found
+    if (selectedOption) {
+      // Update the iconPath of the selected option
+      const updatedOption = { ...selectedOption, iconPath: ICONS_PATHS.PLUS };
+
+      // Filter out the selected option from selectedOptions
+      const newSelectedOptions = selectedOptions.filter((option:any) => option.title !== title);
+
+      // Add the updated option to unSelectedOptions
+      setUnSelectedOptions([...unSelectedOptions, updatedOption]);
+
+      // Update the selectedOptions state
+      setSelectedOptions(newSelectedOptions);
+    }
+  };
 
 
 
@@ -127,21 +164,22 @@ const CreateDashboard: React.FC = () => {
         )}
       </View>
 
-      {false && (
+      {true && (
         <View style={{ gap: adjust(12) }}>
           <MyText p style={styles.labelText}>Choose Options</MyText>
-          <OptionsContainer onPress={(title) => { }} options={DASHBOARD_ITEMS} />
+          <OptionsContainer onPress={(title) => {handleChooseOption(title)}} options={unSelectedOptions} />
         </View>
       )}
 
       <View style={{ gap: adjust(8) }}>
         <View style={{ gap: 12 }}>
-          <MyButton title="More options" btnType={showMoreOptions ? "primary" : "secondary"} onPress={toggleMoreOptions} iconPath={showMoreOptions ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
+          <MyButton title="More options" btnType={showMoreOptions ? "primary" : "secondary"} onPress={()=>{}} iconPath={showMoreOptions ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
           {showMoreOptions && <OptionsContainer onPress={(title) => { }} options={ADDITIONAL_OPTIONS} />}
         </View>
-        <MyButton title="Remove items" btnType={showRemoveItems ? "primary" : "secondary"} onPress={toggleShowRemoveItems} iconPath={showRemoveItems ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
-        <MyButton onPress={handleGenerate} title='Generate now' btnType='primary' iconPath={ICONS_PATHS.GENERATE_ICON} />
+        <MyButton title="Remove items" btnType={showRemoveItems ? "primary" : "secondary"} onPress={()=>{}} iconPath={showRemoveItems ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
+        <MyButton onPress={()=>{}} title='Generate now' btnType='primary' iconPath={ICONS_PATHS.GENERATE_ICON} />
       </View>
+      
       {/* 
       <GenerationMethodModal
         modalVisible={modalVisible}
@@ -172,26 +210,6 @@ const CreateDashboard: React.FC = () => {
 const styles = StyleSheet.create({
   labelText: {
     color: MY_COLORS.WHITE,
-  },
-  optionsHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: adjust(8),
-  },
-  removeItemsButton: {
-    borderColor: MY_COLORS.PRIMARY,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingVertical: adjust(12),
-  },
-  disabledButton: {
-    borderColor: MY_COLORS.DARK_GRAY,
-  },
-  generateButton: {
-    backgroundColor: MY_COLORS.PRIMARY,
-    borderRadius: 8,
-    paddingVertical: adjust(12),
   },
 });
 

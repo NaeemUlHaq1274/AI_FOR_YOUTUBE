@@ -5,7 +5,6 @@ import { StyleProp, StyleSheet, TextInput, TextInputProps, TextStyle, View } fro
 import MyText from './MyText';
 
 interface AppProps extends TextInputProps {
-  label?: string;
   value?: string;
   placeholder: string;
   style?: StyleProp<TextStyle>;
@@ -13,7 +12,6 @@ interface AppProps extends TextInputProps {
 }
 
 const App: React.FC<AppProps> = ({
-  label,
   value,
   placeholder,
   style,
