@@ -122,7 +122,7 @@ const CreateDashboard: React.FC = () => {
             ))}
           </View>
         )}
-        <MyButton title="Remove items" btnType="secondary" onPress={toggleShowRemoveItems} iconPath={showRemoveItems ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
+        <MyButton title="Remove items" btnType="secondary" onPress={toggleShowRemoveItems} iconPath={ICONS_PATHS.CHEVRON} />
         <MyButton title="Generate now" onPress={handleGenerate} iconPath={ICONS_PATHS.GENERATE_ICON as ImageSourcePropType} />
       </View>
 
