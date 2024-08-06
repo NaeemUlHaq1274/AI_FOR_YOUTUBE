@@ -1,6 +1,16 @@
-import { StyleSheet, View, Dimensions, Modal, ViewStyle } from 'react-native';
+// ModalSheet.js
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  ViewStyle,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import React, { ReactNode } from 'react';
+import Modal from 'react-native-modal';
 import { adjust } from '@utils';
+import MyText from '../MyText';
 
 const { height, width } = Dimensions.get("window");
 
@@ -12,28 +22,67 @@ interface ModalSheetProps {
   contentContainerStyle?: ViewStyle;
 }
 
-const ModalSheet: React.FC<ModalSheetProps> = ({ children, visible, onRequestClose, style, contentContainerStyle }) => {
+const ModalSheet: React.FC<ModalSheetProps> = ({
+  children,
+  visible,
+  onRequestClose,
+  style,
+  contentContainerStyle,
+}) => {
   return (
     <Modal
-      animationType="slide"
-      visible={visible}
-      onRequestClose={onRequestClose}
+      isVisible={visible}
+      onBackdropPress={onRequestClose}
+      style={[styles.modal, style]}
+      swipeDirection="down"
+      onSwipeComplete={onRequestClose}
     >
-      <View style={[styles.container, style]}>{children}</View>
+      <View style={styles.content}>
+        <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+          <View style={{width:adjust(36)}} />
+          <View style={styles.handle} />
+          <TouchableOpacity onPress={onRequestClose} style={styles.closeButton}>
+            <MyText color='white'>Close</MyText>
+          </TouchableOpacity>
+        </View>
+        <ScrollView contentContainerStyle={[styles.scrollContainer, contentContainerStyle]} showsVerticalScrollIndicator={false}   >
+          {children}
+        </ScrollView>
+      </View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  content: {
     backgroundColor: 'black',
-    paddingHorizontal: adjust(12),
-    paddingVertical: adjust(10),
-    height: height,
-    width: width,
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: height * 0.8,
+  },
+  handle: {
+    width: adjust(40),
+    height: adjust(5),
+    backgroundColor: '#ccc',
+    borderRadius: adjust(2.5),
+    alignSelf: 'center',
+    marginBottom: adjust(10),
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  closeButton: {
+    backgroundColor: 'transparent',
+    borderRadius: 5,
+    alignSelf: 'center',
+    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
 });
 
 export default ModalSheet;
-
-
