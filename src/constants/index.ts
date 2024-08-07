@@ -29,19 +29,7 @@ export const LAYOUT = {
 
 export const DASHBOARD_ITEMS = ['Include Title', 'Include Description', 'Include Tags', 'Include Script', 'Include Audio', 'Include Thumbnail'];
 
-export const CATEGORIES = [
-    'Gaming',
-    'Education',
-    'Entertainment',
-    'Technology',
-];
 
-export const SUBCATEGORIES: { [key: string]: string[] } = {
-    Gaming: ['Action', 'Adventure', 'Strategy', 'RPG'],
-    Education: ['Science', 'Math', 'History', 'Languages'],
-    Entertainment: ['Movies', 'TV Shows', 'Comedy', 'Vlogs'],
-    Technology: ['Gadgets', 'Software', 'Programming', 'Reviews'],
-};
 
 export const ADDITIONAL_OPTIONS = [
     { title: 'Language', iconPath: ICONS_PATHS.LANGUAGE },

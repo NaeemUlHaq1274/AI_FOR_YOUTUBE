@@ -13,7 +13,7 @@ interface RenderOptionProps {
 const RenderOption: React.FC<RenderOptionProps> = ({ title, icon, onPress }) => (
     <TouchableOpacity onPress={onPress} style={styles.optionButton}>
         <MyText p color={MY_COLORS.WHITE}>{title}</MyText>
-        <Image source={icon} resizeMode='contain' />
+        {icon && <Image source={icon} resizeMode='contain' />}
     </TouchableOpacity>
 );
 

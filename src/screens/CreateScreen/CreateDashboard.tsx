@@ -1,23 +1,19 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { StyleSheet, View, ScrollView, ImageSourcePropType, TouchableOpacity, Image } from 'react-native';
-import {
-  MY_COLORS,
-  IMAGES_PATHS,
-  ICONS_PATHS,
-  ADDITIONAL_OPTIONS,
-} from '@constants';
+import { StyleSheet, View, ScrollView, ImageSourcePropType, TouchableOpacity, Image, Text } from 'react-native';
+import { MY_COLORS, IMAGES_PATHS, ICONS_PATHS, ADDITIONAL_OPTIONS, } from '@constants';
 import { adjust } from '@utils';
-import { LoadingScreen, MyButton, MyHeader, MyScrollableContainer, MyText, MyTextInput } from '@components';
+import { LoadingScreen, ModalSheet, MyButton, MyHeader, MyScrollableContainer, MyText, MyTextInput } from '@components';
 import RenderOption from './components/RenderOption';
-import GenerationMethodModal from './components/GenerationMethodModal';
-import CategoryModal from './components/CategoryModal';
-import SubcategoryModal from './components/SubcategoryModal';
-import ThemeInput from './components/ThemeInput';
 import { useAuth } from '@context';
+import OptionsContainer from './components/OptionContainer';
 
+interface Option {
+  title: string;
+  iconPath?: ImageSourcePropType;
+}
 const CreateDashboard: React.FC = () => {
 
-  const [unSelectedOptions,setUnSelectedOptions] = useState([
+  const [unSelectedOptions, setUnSelectedOptions] = useState([
     { title: 'Include Title', iconPath: ICONS_PATHS.PLUS },
     { title: 'Include Description', iconPath: ICONS_PATHS.PLUS },
     { title: 'Include Tags', iconPath: ICONS_PATHS.PLUS },
@@ -25,109 +21,41 @@ const CreateDashboard: React.FC = () => {
     { title: 'Include Audio', iconPath: ICONS_PATHS.PLUS },
     { title: 'Include Thumbnail', iconPath: ICONS_PATHS.PLUS },
   ])
-  
-  const [selectedOptions,setSelectedOptions] = useState<any>([])
 
+  const CATEGORIES: Option[] = [
+    { title: 'Gaming' },
+    { title: 'Education' },
+    { title: 'Entertainment' },
+    { title: 'Technology' },
+  ];
 
-
-
+  const SUBCATEGORIES: { [key: string]: Option[] } = {
+    Gaming: [{ title: 'Action' }, { title: 'Adventure' }, { title: 'Strategy' }, { title: 'RPG' }],
+    Education: [{ title: 'Science' }, { title: 'Math' }, { title: 'History' }, { title: 'Languages' }],
+    Entertainment: [{ title: 'Movies' }, { title: 'TV Shows' }, { title: 'Comedy' }, { title: 'Vlogs' }],
+    Technology: [{ title: 'Gadgets' }, { title: 'Software' }, { title: 'Programming' }, { title: 'Reviews' }],
+  };
+  const [visibleModal, setVisibleModal] = useState<false | 'REMOVE_MODAL' | 'CATEGORY_MODAL' | 'SUBCATEGORY_MODAL'>(false);
+  const [selectedOptions, setSelectedOptions] = useState<any>([])
   const [theme, setTheme] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [selectedOption, setSelectedOption] = useState<'theme' | 'category' | 'script' | 'v-theme'>('theme');
-  const [categoryModalVisible, setCategoryModalVisible] = useState<boolean>(false);
-  const [subcategoryModalVisible, setSubcategoryModalVisible] = useState<boolean>(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
   const [showMoreOptions, setShowMoreOptions] = useState<boolean>(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [showRemoveItems, setShowRemoveItems] = useState<boolean>(false);
 
   const { currentUser } = useAuth();
 
-  // const handleGenerate = useCallback(() => {
-  //   if (selectedOption === 'theme' && theme.trim() === '') {
-  //     console.log('Please enter a theme');
-  //     return;
-  //   }
-  //   if (selectedOption === 'category' && (!selectedCategory || !selectedSubcategory)) {
-  //     console.log('Please select a category and subcategory');
-  //     return;
-  //   }
-  //   setIsLoading(true);
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //     console.log(`Generated content for ${selectedOption}:`, selectedOption === 'theme' ? theme : `${selectedCategory} - ${selectedSubcategory}`);
-  //   }, 2000);
-  // }, [selectedOption, theme, selectedCategory, selectedSubcategory]);
-
-  // const toggleMoreOptions = useCallback(() => {
-  //   setShowMoreOptions((prev) => !prev);
-  // }, []);
-
-  // const handleItemClick = useCallback((item: string) => {
-  //   setSelectedItems((prevItems) =>
-  //     prevItems.includes(item) ? prevItems.filter((i) => i !== item) : [...prevItems, item]
-  //   );
-  // }, []);
-
-  // const toggleShowRemoveItems = useCallback(() => {
-  //   setShowRemoveItems((prev) => !prev);
-  // }, []);
-
-  // const availableItems = useMemo(() =>
-  //   unSelectedOption.filter(item => !selectedItems.includes(item)),
-  //   [selectedItems]);
-
-  // const isRemoveButtonDisabled = useMemo(() =>
-  //   selectedItems.length === 0,
-  //   [selectedItems]);
-
-
-  const handleChooseOption = (title:string) => {
-    // Find the selected option from unSelectedOptions
+  const handleChooseOption = (title: string) => {
     const selectedOption = unSelectedOptions.find(option => option.title === title);
-
-    // If the selected option is found
     if (selectedOption) {
-      // Update the iconPath of the selected option
       const updatedOption = { ...selectedOption, iconPath: ICONS_PATHS.MINUS };
-
-      // Filter out the selected option from unSelectedOptions
       const newUnSelectedOptions = unSelectedOptions.filter(option => option.title !== title);
-
-      // Add the updated option to selectedOptions
       setSelectedOptions([...selectedOptions, updatedOption]);
-
-      // Update the unSelectedOptions state
       setUnSelectedOptions(newUnSelectedOptions);
     }
   };
 
-  const handleDeselectOption = (title:string) => {
-    // Find the selected option from selectedOptions
-    const selectedOption = selectedOptions.find((option:any) => option.title === title);
-
-    // If the selected option is found
-    if (selectedOption) {
-      // Update the iconPath of the selected option
-      const updatedOption = { ...selectedOption, iconPath: ICONS_PATHS.PLUS };
-
-      // Filter out the selected option from selectedOptions
-      const newSelectedOptions = selectedOptions.filter((option:any) => option.title !== title);
-
-      // Add the updated option to unSelectedOptions
-      setUnSelectedOptions([...unSelectedOptions, updatedOption]);
-
-      // Update the selectedOptions state
-      setSelectedOptions(newSelectedOptions);
-    }
-  };
-
-
-
-
-  if (isLoading)  return <LoadingScreen description="Generating your video content..." />;
+  if (isLoading) return <LoadingScreen description="Generating your video content..." />;
 
   return (
     <MyScrollableContainer contentContainerStyle={{ gap: 20 }} >
@@ -150,10 +78,10 @@ const CreateDashboard: React.FC = () => {
             <Image source={ICONS_PATHS.NEXT} />
           </TouchableOpacity>
         </View>
-        {selectedOption !== 'theme' ? (
+        {selectedOption == 'theme' ? (
           <View style={{ gap: adjust(8) }}>
-            <RenderOption title="Select Category" icon={ICONS_PATHS.MENU} />
-            <RenderOption title="Select Sub-Category" icon={ICONS_PATHS.MENU} />
+            <RenderOption title="Select Category" icon={ICONS_PATHS.MENU} onPress={() => setVisibleModal('CATEGORY_MODAL')} />
+            <RenderOption title="Select Sub-Category" icon={ICONS_PATHS.MENU} onPress={() => setVisibleModal('SUBCATEGORY_MODAL')} />
           </View>
         ) : (
           <MyTextInput
@@ -164,45 +92,31 @@ const CreateDashboard: React.FC = () => {
         )}
       </View>
 
+
       {true && (
         <View style={{ gap: adjust(12) }}>
           <MyText p style={styles.labelText}>Choose Options</MyText>
-          <OptionsContainer onPress={(title) => {handleChooseOption(title)}} options={unSelectedOptions} />
+          <OptionsContainer onPress={(title) => { handleChooseOption(title) }} options={unSelectedOptions} />
         </View>
       )}
 
       <View style={{ gap: adjust(8) }}>
         <View style={{ gap: 12 }}>
-          <MyButton title="More options" btnType={showMoreOptions ? "primary" : "secondary"} onPress={()=>{}} iconPath={showMoreOptions ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
+          <MyButton title="More options" btnType={showMoreOptions ? "primary" : "secondary"} onPress={() => { }} iconPath={showMoreOptions ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
           {showMoreOptions && <OptionsContainer onPress={(title) => { }} options={ADDITIONAL_OPTIONS} />}
         </View>
-        <MyButton title="Remove items" btnType={showRemoveItems ? "primary" : "secondary"} onPress={()=>{}} iconPath={showRemoveItems ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
-        <MyButton onPress={()=>{}} title='Generate now' btnType='primary' iconPath={ICONS_PATHS.GENERATE_ICON} />
+        <MyButton title="Remove items" btnType={showRemoveItems ? "primary" : "secondary"} onPress={() => { setVisibleModal('REMOVE_MODAL') }} iconPath={showRemoveItems ? ICONS_PATHS.CARET_UP : ICONS_PATHS.CHEVRON} />
+        <MyButton onPress={() => { }} title='Generate now' btnType='primary' iconPath={ICONS_PATHS.GENERATE_ICON} />
       </View>
-      
-      {/* 
-      <GenerationMethodModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        selectedOption={selectedOption}
-        setSelectedOption={setSelectedOption}
-      />
 
-      <CategoryModal
-        visible={categoryModalVisible}
-        setVisible={setCategoryModalVisible}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        setSelectedSubcategory={setSelectedSubcategory}
-      />
 
-      <SubcategoryModal
-        visible={subcategoryModalVisible}
-        setVisible={setSubcategoryModalVisible}
-        selectedCategory={selectedCategory}
-        selectedSubcategory={selectedSubcategory}
-        setSelectedSubcategory={setSelectedSubcategory}
-      /> */}
+      <ModalSheet visible={!!visibleModal} onRequestClose={() => { setVisibleModal(false) }}>
+        {visibleModal === 'REMOVE_MODAL' && <OptionsContainer onPress={(title) => { handleChooseOption(title) }} options={selectedOptions} />}
+        {visibleModal === 'CATEGORY_MODAL' && <OptionsContainer onPress={(title) => { handleChooseOption(title) }} options={CATEGORIES} />}
+        {visibleModal === 'SUBCATEGORY_MODAL' && <OptionsContainer onPress={(title) => { handleChooseOption(title) }} options={SUBCATEGORIES.Education} />}
+
+      </ModalSheet>
+
     </MyScrollableContainer>
   );
 };
@@ -214,30 +128,3 @@ const styles = StyleSheet.create({
 });
 
 export default CreateDashboard;
-
-
-
-
-interface OptionsContainerProps {
-  options: Option[];
-  onPress: (title: string) => void;
-}
-interface Option {
-  title: string;
-  iconPath: ImageSourcePropType;
-}
-
-const OptionsContainer: React.FC<OptionsContainerProps> = ({ options, onPress }) => {
-  return (
-    <View style={{ gap: adjust(8) }}>
-      {options.map((option, index) => (
-        <RenderOption
-          key={index} // Using index as key if option is not unique
-          title={option.title}
-          icon={option.iconPath}
-          onPress={() => onPress(option.title)}
-        />
-      ))}
-    </View>
-  );
-}
