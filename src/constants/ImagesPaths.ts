@@ -51,5 +51,22 @@ export const IMAGE_SAVEDS = {
   IMAGE_SAVEDS_1: require('@assets/SavedScreen/IMAGE_SAVED_SCREEN.png')
 }
 
+export const CREATE_CONTENT_SCREEN = {
+  COPY: require('@assets/CreateContent/COPY.png'),
+  DIVIDER: require('@assets/CreateContent/DIVIDER.png'),
+  DOWNLOAD: require('@assets/CreateContent/DOWNLOAD.png'),
+  FAST_BACKWARD: require('@assets/CreateContent/FAST_BACKWARD.png'),
+  FAST_FORWARD: require('@assets/CreateContent/FAST_FORWARD.png'),
+  GO_BACK: require('@assets/CreateContent/GO_BACK.png'),
+  PAUSE: require('@assets/CreateContent/PAUSE.png'),
+  PDF: require('@assets/CreateContent/PDF.png'),
+  PLAY: require('@assets/CreateContent/PLAY.png'),
+  RELOAD: require('@assets/CreateContent/RELOAD.png'),
+  SAVE: require('@assets/CreateContent/SAVE.png'),
+  SETTING: require('@assets/CreateContent/SETTING.png'),
+  YOUTUBE_THUMBNAIL_DUMMY_IMAGE: require('@assets/CreateContent/YOUTUBE_THUMBNAIL_DUMMY_IMAGE.png'),
+}
+
+
 export const PROFILE_SCREEN = {
 }

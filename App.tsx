@@ -60,6 +60,8 @@ import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
 import SplashScreen from 'react-native-splash-screen';
 import { ModalSheet, MyText } from '@components';
+import { ContentScreen } from '@screens';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const App = () => {
   useEffect(() => {
@@ -67,86 +69,9 @@ const App = () => {
   }, [])
   
   return (
-    <ModalSheet visible={true} onRequestClose={()=>{}}>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-    </ModalSheet>
+    <GestureHandlerRootView style={{ flex: 1, }}>
+      <ContentScreen />
+    </GestureHandlerRootView>
   )
 }
 
