@@ -70,3 +70,8 @@ export const CREATE_CONTENT_SCREEN = {
 
 export const PROFILE_SCREEN = {
 }
+export const PAY_WALL_SCREEN = {
+  PAY_WALL_IMAGE: require('@assets/PayWall/PayWallImage.png'),
+  PAY_WALL_LINE: require('@assets/PayWall/PayWallLine.png'),
+  PAY_WALL_TICK: require('@assets/PayWall/PayWallTick.png'),
+}

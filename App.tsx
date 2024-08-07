@@ -55,26 +55,24 @@
 
 // const styles = StyleSheet.create({})
 
-
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
-import { ModalSheet, MyText } from '@components';
-import { ContentScreen } from '@screens';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import PaywallModal from './src/PaywallModal';
 
 const App = () => {
   useEffect(() => {
     SplashScreen.hide();
-  }, [])
+  }, []);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1, }}>
-      <ContentScreen />
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <PaywallModal />
     </GestureHandlerRootView>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
