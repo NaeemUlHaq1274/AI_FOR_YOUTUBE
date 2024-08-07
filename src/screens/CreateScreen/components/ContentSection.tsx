@@ -1,27 +1,69 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { MyText, PressableImage } from '@components'
-import { CREATE_CONTENT_SCREEN, MY_COLORS } from '@constants'
-import { adjust } from '@utils'
+import React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import { MyText, PressableImage } from '@components';
+import { MY_COLORS } from '@constants';
+import { adjust } from '@utils';
 
-const ContentSection = () => {
+type ContentSectionProps = {
+  title: string;
+  content: { text?: string; source?: any };
+  icons?: { source: any; onPress: () => void }[];
+};
+
+const ContentSection: React.FC<ContentSectionProps> = ({ title, content, icons = [] }) => {
+  const isImageContent = !!content.source;
+
   return (
-    <View style={{ gap: 6, borderWidth:2,borderColor:"white", backgroundColor:MY_COLORS.BLACK }}>
-          <MyText p bold style={{}}>Title</MyText>
-          <View style={{ flexDirection: "row", gap: 12, padding: 8, borderWidth:2,borderColor:"white" }}>
-            <View style={{width:"89%", borderWidth:2,borderColor:"white"}}>
-              {/* <MyText cp style={{}}>Discover the incredible health benefits of eating apples daily! Learn how this simple habit can boost your overall wellness and keep the doctor away</MyText> */}
-              <Image style={{ width: '100%', height: undefined, aspectRatio: 16 / 9 }}   resizeMode="contain" source={CREATE_CONTENT_SCREEN.YOUTUBE_THUMBNAIL_DUMMY_IMAGE} />
-            </View>
-            <View style={{width:"9%", gap:adjust(12), borderWidth:2,borderColor:"white"}}>
-              <PressableImage onPress={() => { }} source={CREATE_CONTENT_SCREEN.PDF} />
-              <PressableImage onPress={() => { }} source={CREATE_CONTENT_SCREEN.PDF} />
-            </View>
-          </View>
+    <View style={styles.container}>
+      <MyText p bold>{title}</MyText>
+      <View style={styles.contentContainer}>
+        <View style={[styles.content, { width: icons.length > 0 ? '89%' : '100%' }]}>
+          {isImageContent ? (
+            <Image style={styles.image} resizeMode="contain" source={content.source} />
+          ) : (
+            <MyText cp>{content.text}</MyText>
+          )}
         </View>
-  )
-}
+        {icons.length > 0 && (
+          <View style={styles.iconsContainer}>
+            {icons.map((icon, index) => (
+              <PressableImage key={index} onPress={icon.onPress} source={icon.source} />
+            ))}
+          </View>
+        )}
+      </View>
+    </View>
+  );
+};
 
-export default ContentSection
+export default ContentSection;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    gap: 6,
+    borderWidth: 2,
+    borderColor: 'white',
+    backgroundColor: MY_COLORS.BLACK,
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    gap: 12,
+    padding: 8,
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  content: {
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  image: {
+    width: '100%',
+    height: undefined,
+    aspectRatio: 16 / 9,
+  },
+  iconsContainer: {
+    gap: adjust(12),
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+});
