@@ -1,4 +1,3 @@
-import { ErrorBoundaryFallbackUI, MyButton, MyText } from '@components';
 import { AuthProvider, SubscriptionProvider } from '@context';
 import { usePushNotification } from '@hooks';
 import { useEffect } from 'react';
@@ -30,76 +29,6 @@ const App = () => {
   }, []);
   return (
     <ModalSheet visible={true} onRequestClose={() => { }}>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
-      <MyText >hello</MyText>
       <MyText >hello</MyText>
       <MyText >hello</MyText>
       <MyText >hello</MyText>
