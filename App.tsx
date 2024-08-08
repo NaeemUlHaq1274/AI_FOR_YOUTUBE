@@ -59,7 +59,9 @@ import React, { useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import PaywallModal from './src/PaywallModal';
+import PaywallContainer from './src/PaywallContainer';
+import { ModalSheet } from '@components';
+import { hp } from '@utils';
 
 const App = () => {
   useEffect(() => {
@@ -68,7 +70,9 @@ const App = () => {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <PaywallModal />
+      <ModalSheet onRequestClose={()=>{}} visible={true} contentStyle={{maxHeight:hp(100),height:hp(95)}} >
+        <PaywallContainer />
+      </ModalSheet>
     </GestureHandlerRootView>
   );
 };

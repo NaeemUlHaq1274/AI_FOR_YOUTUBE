@@ -3,7 +3,7 @@ import React from 'react';
 import { MyText, PressableImage } from '@components';
 import { CREATE_CONTENT_SCREEN, MY_COLORS } from '@constants';
 import { adjust } from '@utils';
-import ContentSection from './components/ContentSection';
+import { ContentSection } from './components';
 
 const ContentScreen = () => {
   const textContent = {

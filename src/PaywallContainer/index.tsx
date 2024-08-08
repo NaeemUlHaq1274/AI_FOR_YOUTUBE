@@ -3,9 +3,9 @@ import React from 'react'
 import { MyButton, MyContainer, MyScrollableContainer, MyText, PressableImage } from '@components'
 import { MY_COLORS, PAY_WALL_SCREEN } from '@constants'
 
-const PaywallModal = () => {
+const PaywallContainer = () => {
   return (
-    <MyScrollableContainer contentContainerStyle={{ flexGrow: 1, gap: 20 }}>
+    <View style={{ flexGrow: 1, gap: 20 }}>
       <MyText h1 bold style={{ textAlign: 'center' }} >Boost Your Creation</MyText>
       <MyText cp style={{ textAlign: 'center' }}>Make the most of your content with CreatorBoost Basic and Premium plans.</MyText>
       <Image source={PAY_WALL_SCREEN.PAY_WALL_IMAGE} />
@@ -24,10 +24,10 @@ const PaywallModal = () => {
       </View>
       <MyButton title='Buy Now' onPress={() => { }} />
       <MyText fp style={{ textAlign: 'center' }}>By placing the order, you agree to the Terms of Service and Privacy Policy. Subscription automatically renews unless auto-renew is turned off at-least 24-hours before the end of the current period.</MyText>
-    </MyScrollableContainer >
+    </View >
   )
 }
 
-export default PaywallModal
+export default PaywallContainer
 
 const styles = StyleSheet.create({})

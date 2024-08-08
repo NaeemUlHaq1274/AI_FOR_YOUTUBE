@@ -6,7 +6,7 @@ import { MyText } from '@components';
 
 interface RenderOptionProps {
     title: string;
-    icon: ImageSourcePropType;
+    icon?: ImageSourcePropType;
     onPress?: () => void;
 }
 

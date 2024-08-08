@@ -3,9 +3,8 @@ import { StyleSheet, View, ScrollView, ImageSourcePropType, TouchableOpacity, Im
 import { MY_COLORS, IMAGES_PATHS, ICONS_PATHS, ADDITIONAL_OPTIONS, } from '@constants';
 import { adjust } from '@utils';
 import { LoadingScreen, ModalSheet, MyButton, MyHeader, MyScrollableContainer, MyText, MyTextInput } from '@components';
-import RenderOption from './components/RenderOption';
 import { useAuth } from '@context';
-import OptionsContainer from './components/OptionContainer';
+import { OptionsContainer, RenderOption } from './components';
 
 interface Option {
   title: string;

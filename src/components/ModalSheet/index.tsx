@@ -20,6 +20,7 @@ interface ModalSheetProps {
   onRequestClose: () => void;
   style?: ViewStyle;
   contentContainerStyle?: ViewStyle;
+  contentStyle?: ViewStyle;
 }
 
 const ModalSheet: React.FC<ModalSheetProps> = ({
@@ -28,6 +29,7 @@ const ModalSheet: React.FC<ModalSheetProps> = ({
   onRequestClose,
   style,
   contentContainerStyle,
+  contentStyle,
 }) => {
   return (
     <Modal
@@ -37,7 +39,7 @@ const ModalSheet: React.FC<ModalSheetProps> = ({
       swipeDirection="down"
       onSwipeComplete={onRequestClose}
     >
-      <View style={styles.content}>
+      <View style={[styles.content,contentStyle]}>
         <View style={{flexDirection:"row",justifyContent:"space-between"}}>
           <View style={{width:adjust(36)}} />
           <View style={styles.handle} />
