@@ -18,7 +18,7 @@ const SectionItem: React.FC<SectionItemProps> = ({ icon, title, onPress, color =
   <TouchableOpacity onPress={onPress} style={styles.sectionItem}>
     <View style={styles.sectionItemContent}>
       <Image source={icon} style={styles.sectionItemIcon} />
-      <MyText style={[styles.sectionItemText, { color }]}>{title}</MyText>
+      <MyText style={styles.sectionItemText}>{title}</MyText>
     </View>
   </TouchableOpacity>
 );

@@ -72,6 +72,7 @@ export const PROFILE_SCREEN = {
 }
 export const PAY_WALL_SCREEN = {
   PAY_WALL_IMAGE: require('@assets/PayWall/PayWallImage.png'),
-  PAY_WALL_LINE: require('@assets/PayWall/PayWallLine.png'),
   PAY_WALL_TICK: require('@assets/PayWall/PayWallTick.png'),
+  PLUS_EXPANDABLE: require('@assets/PayWall/PLUS_EXPANDABLE.png'),
+  MINUS_EXPANDABLE: require('@assets/PayWall/MINUS_EXPANDABLE.png'),
 }
